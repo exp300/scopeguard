@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 
+const { initDb } = require('./db/database');
 const authRoutes = require('./routes/auth');
 const contractRoutes = require('./routes/contracts');
 const analysisRoutes = require('./routes/analysis');
@@ -47,7 +48,15 @@ if (process.env.NODE_ENV === 'production') {
   app.get('*', (req, res) => res.sendFile(path.join(DIST, 'index.html')));
 }
 
+// Initialise the database before accepting any traffic.
 const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => {
-  console.log(`ScopeGuard backend running on http://localhost:${PORT}`);
-});
+initDb()
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`ScopeGuard backend running on http://localhost:${PORT}`);
+    });
+  })
+  .catch(err => {
+    console.error('Failed to initialise database:', err);
+    process.exit(1);
+  });
