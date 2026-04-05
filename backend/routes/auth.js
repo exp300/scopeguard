@@ -6,6 +6,8 @@ const authMiddleware = require('../middleware/auth');
 
 const router = express.Router();
 
+console.log('[auth] JWT_SECRET present:', !!process.env.JWT_SECRET, 'length:', process.env.JWT_SECRET?.length);
+
 // POST /api/auth/register
 router.post('/register', async (req, res) => {
   const { email, password, name } = req.body;
