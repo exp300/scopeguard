@@ -6,7 +6,9 @@ const authMiddleware = require('../middleware/auth');
 
 const router = express.Router();
 
+const JWT_SECRET = process.env.JWT_SECRET || 'temporary-hardcoded-secret-for-railway-debug';
 console.log('[auth] JWT_SECRET present:', !!process.env.JWT_SECRET, 'length:', process.env.JWT_SECRET?.length);
+console.log('[auth] JWT_SECRET source:', process.env.JWT_SECRET ? 'from env' : 'using fallback');
 
 // POST /api/auth/register
 router.post('/register', async (req, res) => {
@@ -33,7 +35,7 @@ router.post('/register', async (req, res) => {
 
     console.log('[auth] Register success — userId:', result.lastInsertRowid, 'email:', email.toLowerCase());
 
-    const token = jwt.sign({ userId: result.lastInsertRowid }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ userId: result.lastInsertRowid }, JWT_SECRET, {
       expiresIn: '7d',
     });
 
@@ -71,7 +73,7 @@ router.post('/login', async (req, res) => {
 
     console.log('[auth] Login success — userId:', user.id, 'email:', user.email);
 
-    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '7d' });
+    const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '7d' });
 
     res.json({
       token,
