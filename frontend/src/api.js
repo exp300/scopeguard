@@ -12,13 +12,17 @@ api.interceptors.request.use(config => {
   return config;
 });
 
-// On 401, clear token (expired / invalid)
+// On 401, clear token and signal AuthContext via a custom event.
+// Do NOT use window.location.href here — that causes a hard page reload which
+// wipes React state, defeats the loading guard in ProtectedRoute, and makes
+// the user bounce back to /login even after a successful login.
 api.interceptors.response.use(
   res => res,
   err => {
     if (err.response?.status === 401) {
+      console.warn('[api] 401 received on', err.config?.url, '— clearing token, dispatching auth:logout');
       localStorage.removeItem('sg_token');
-      window.location.href = '/login';
+      window.dispatchEvent(new Event('auth:logout'));
     }
     return Promise.reject(err);
   }
