@@ -17,25 +17,32 @@ router.post('/register', async (req, res) => {
     return res.status(400).json({ error: 'Password must be at least 8 characters' });
   }
 
-  const db = getDb();
-  const existing = db.prepare('SELECT id FROM users WHERE email = ?').get(email.toLowerCase());
-  if (existing) {
-    return res.status(409).json({ error: 'Email already registered' });
+  try {
+    const db = getDb();
+    const existing = db.prepare('SELECT id FROM users WHERE email = ?').get(email.toLowerCase());
+    if (existing) {
+      return res.status(409).json({ error: 'Email already registered' });
+    }
+
+    const passwordHash = await bcrypt.hash(password, 10);
+    const result = db.prepare(
+      'INSERT INTO users (email, password_hash, name) VALUES (?, ?, ?)'
+    ).run(email.toLowerCase(), passwordHash, name);
+
+    console.log('[auth] Register success — userId:', result.lastInsertRowid, 'email:', email.toLowerCase());
+
+    const token = jwt.sign({ userId: result.lastInsertRowid }, process.env.JWT_SECRET, {
+      expiresIn: '7d',
+    });
+
+    res.status(201).json({
+      token,
+      user: { id: result.lastInsertRowid, email: email.toLowerCase(), name, plan: 'free', analyses_used: 0 },
+    });
+  } catch (err) {
+    console.error('[auth] Register error:', err.message, err.stack);
+    res.status(500).json({ error: 'Registration failed. Please try again.' });
   }
-
-  const passwordHash = await bcrypt.hash(password, 10);
-  const result = db.prepare(
-    'INSERT INTO users (email, password_hash, name) VALUES (?, ?, ?)'
-  ).run(email.toLowerCase(), passwordHash, name);
-
-  const token = jwt.sign({ userId: result.lastInsertRowid }, process.env.JWT_SECRET, {
-    expiresIn: '7d',
-  });
-
-  res.status(201).json({
-    token,
-    user: { id: result.lastInsertRowid, email: email.toLowerCase(), name, plan: 'free', analyses_used: 0 },
-  });
 });
 
 // POST /api/auth/login
@@ -46,30 +53,39 @@ router.post('/login', async (req, res) => {
     return res.status(400).json({ error: 'Email and password are required' });
   }
 
-  const db = getDb();
-  const user = db.prepare('SELECT * FROM users WHERE email = ?').get(email.toLowerCase());
-  if (!user) {
-    return res.status(401).json({ error: 'Invalid credentials' });
+  try {
+    const db = getDb();
+    const user = db.prepare('SELECT * FROM users WHERE email = ?').get(email.toLowerCase());
+    if (!user) {
+      console.log('[auth] Login failed — no user found for:', email.toLowerCase());
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
+    const valid = await bcrypt.compare(password, user.password_hash);
+    if (!valid) {
+      console.log('[auth] Login failed — wrong password for:', email.toLowerCase());
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
+    console.log('[auth] Login success — userId:', user.id, 'email:', user.email);
+
+    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '7d' });
+
+    res.json({
+      token,
+      user: {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        plan: user.plan,
+        analyses_used: user.analyses_used,
+        hourly_rate: user.hourly_rate,
+      },
+    });
+  } catch (err) {
+    console.error('[auth] Login error:', err.message, err.stack);
+    res.status(500).json({ error: 'Login failed. Please try again.' });
   }
-
-  const valid = await bcrypt.compare(password, user.password_hash);
-  if (!valid) {
-    return res.status(401).json({ error: 'Invalid credentials' });
-  }
-
-  const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '7d' });
-
-  res.json({
-    token,
-    user: {
-      id: user.id,
-      email: user.email,
-      name: user.name,
-      plan: user.plan,
-      analyses_used: user.analyses_used,
-      hourly_rate: user.hourly_rate,
-    },
-  });
 });
 
 // GET /api/auth/me — returns current user info

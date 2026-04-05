@@ -2,27 +2,28 @@ const initSqlJs = require('sql.js');
 const path = require('path');
 const fs = require('fs');
 
-const DB_PATH = path.join(__dirname, 'scopeguard.db');
+// Allow overriding DB path via env var (useful for Railway volumes)
+const DB_PATH = process.env.DB_PATH || path.join(__dirname, 'scopeguard.db');
 const SCHEMA_PATH = path.join(__dirname, 'schema.sql');
 
 let db = null; // sql.js Database instance
 
 // ─── Persistence ──────────────────────────────────────────────────────────────
-// sql.js is in-memory. We manually load from / save to disk so data survives
-// restarts. saveDb() is called after every mutating statement.
 
 function saveDb() {
-  const data = db.export(); // returns Uint8Array
-  fs.writeFileSync(DB_PATH, Buffer.from(data));
+  try {
+    const data = db.export(); // returns Uint8Array
+    fs.writeFileSync(DB_PATH, Buffer.from(data));
+  } catch (err) {
+    // Log but don't crash — the in-memory DB is still usable for the request
+    console.error('[DB] saveDb failed — data may not persist across restarts:', err.message);
+  }
 }
 
 // ─── better-sqlite3-compatible wrapper ────────────────────────────────────────
-// The routes use db.prepare(sql).get(...params) / .all(...params) / .run(...params)
-// and db.exec(sql). This thin wrapper mirrors that API so no route code changes.
 
 function prepare(sql) {
   return {
-    // Return first matching row as a plain object, or undefined if none.
     get(...params) {
       const stmt = db.prepare(sql);
       stmt.bind(params);
@@ -31,7 +32,6 @@ function prepare(sql) {
       return row;
     },
 
-    // Return all matching rows as an array of plain objects.
     all(...params) {
       const stmt = db.prepare(sql);
       stmt.bind(params);
@@ -41,8 +41,6 @@ function prepare(sql) {
       return rows;
     },
 
-    // Execute a mutating statement (INSERT / UPDATE / DELETE).
-    // Returns { lastInsertRowid } to match the better-sqlite3 contract.
     run(...params) {
       const stmt = db.prepare(sql);
       stmt.bind(params);
@@ -58,14 +56,12 @@ function prepare(sql) {
   };
 }
 
-// Execute one or more SQL statements (used for schema init).
 function exec(sql) {
-  db.run(sql);
+  // db.exec() handles multiple semicolon-separated statements, db.run() does not
+  db.exec(sql);
   saveDb();
 }
 
-// ─── Public DB proxy ──────────────────────────────────────────────────────────
-// Routes call getDb().prepare(...) etc. — returns the same proxy every time.
 const dbProxy = { prepare, exec };
 
 function getDb() {
@@ -74,31 +70,57 @@ function getDb() {
 }
 
 // ─── Async initialisation ─────────────────────────────────────────────────────
-// Must be awaited once at server startup before any request is handled.
 
 async function initDb() {
+  console.log('[DB] Initialising sql.js...');
+  console.log('[DB] DB_PATH:', DB_PATH);
+  console.log('[DB] SCHEMA_PATH:', SCHEMA_PATH);
+  console.log('[DB] NODE_ENV:', process.env.NODE_ENV);
+
   const SQL = await initSqlJs();
+  console.log('[DB] sql.js WASM loaded');
 
   if (fs.existsSync(DB_PATH)) {
-    // Load existing database from disk.
+    console.log('[DB] Existing database file found, loading from disk');
     const fileBuffer = fs.readFileSync(DB_PATH);
+    console.log('[DB] File size:', fileBuffer.length, 'bytes');
     db = new SQL.Database(fileBuffer);
   } else {
-    // First run — create fresh in-memory database and apply schema.
+    console.log('[DB] No database file found, creating fresh database');
     db = new SQL.Database();
   }
 
-  // Enable foreign key enforcement.
+  // Enable foreign key enforcement
   db.run('PRAGMA foreign_keys = ON');
 
-  // Apply schema (CREATE TABLE IF NOT EXISTS — safe to run on every start).
+  // Apply schema — MUST use db.exec() here, not db.run().
+  // db.run() only executes the FIRST statement; db.exec() handles all three
+  // CREATE TABLE statements in schema.sql.
+  console.log('[DB] Applying schema...');
   const schema = fs.readFileSync(SCHEMA_PATH, 'utf8');
-  db.run(schema);
+  try {
+    db.exec(schema);
+    console.log('[DB] Schema applied successfully');
+  } catch (err) {
+    console.error('[DB] Schema application failed:', err.message);
+    throw err;
+  }
 
-  // Persist initial state so the file always exists after first boot.
+  // Verify all three tables exist
+  const tables = db
+    .exec("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name")
+    [0]?.values.map(r => r[0]) ?? [];
+  console.log('[DB] Tables present:', tables.join(', ') || '(none)');
+
+  const expected = ['analyses', 'contracts', 'users'];
+  const missing = expected.filter(t => !tables.includes(t));
+  if (missing.length > 0) {
+    throw new Error(`[DB] Missing tables after schema init: ${missing.join(', ')}`);
+  }
+
+  // Persist initial state
   saveDb();
-
-  console.log('Database ready:', DB_PATH);
+  console.log('[DB] Database ready');
 }
 
 module.exports = { getDb, initDb };
