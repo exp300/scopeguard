@@ -1,7 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { getDb } = require('../db/database');
+const { query } = require('../db/database');
 const authMiddleware = require('../middleware/auth');
 
 const router = express.Router();
@@ -22,26 +22,28 @@ router.post('/register', async (req, res) => {
   }
 
   try {
-    const db = getDb();
-    const existing = db.prepare('SELECT id FROM users WHERE email = ?').get(email.toLowerCase());
-    if (existing) {
+    const { rows: existing } = await query(
+      'SELECT id FROM users WHERE email = $1',
+      [email.toLowerCase()]
+    );
+    if (existing.length > 0) {
       return res.status(409).json({ error: 'Email already registered' });
     }
 
     const passwordHash = await bcrypt.hash(password, 10);
-    const result = db.prepare(
-      'INSERT INTO users (email, password_hash, name) VALUES (?, ?, ?)'
-    ).run(email.toLowerCase(), passwordHash, name);
+    const { rows } = await query(
+      'INSERT INTO users (email, password_hash, name) VALUES ($1, $2, $3) RETURNING id',
+      [email.toLowerCase(), passwordHash, name]
+    );
+    const userId = rows[0].id;
 
-    console.log('[auth] Register success — userId:', result.lastInsertRowid, 'email:', email.toLowerCase());
+    console.log('[auth] Register success — userId:', userId, 'email:', email.toLowerCase());
 
-    const token = jwt.sign({ userId: result.lastInsertRowid }, JWT_SECRET, {
-      expiresIn: '7d',
-    });
+    const token = jwt.sign({ userId }, JWT_SECRET, { expiresIn: '7d' });
 
     res.status(201).json({
       token,
-      user: { id: result.lastInsertRowid, email: email.toLowerCase(), name, plan: 'free', analyses_used: 0 },
+      user: { id: userId, email: email.toLowerCase(), name, plan: 'free', analyses_used: 0 },
     });
   } catch (err) {
     console.error('[auth] Register error:', err.message, err.stack);
@@ -58,8 +60,12 @@ router.post('/login', async (req, res) => {
   }
 
   try {
-    const db = getDb();
-    const user = db.prepare('SELECT * FROM users WHERE email = ?').get(email.toLowerCase());
+    const { rows } = await query(
+      'SELECT * FROM users WHERE email = $1',
+      [email.toLowerCase()]
+    );
+    const user = rows[0];
+
     if (!user) {
       console.log('[auth] Login failed — no user found for:', email.toLowerCase());
       return res.status(401).json({ error: 'Invalid credentials' });
@@ -92,27 +98,36 @@ router.post('/login', async (req, res) => {
   }
 });
 
-// GET /api/auth/me — returns current user info
-router.get('/me', authMiddleware, (req, res) => {
-  const db = getDb();
-  const user = db.prepare(
-    'SELECT id, email, name, plan, analyses_used, hourly_rate FROM users WHERE id = ?'
-  ).get(req.userId);
-
-  if (!user) return res.status(404).json({ error: 'User not found' });
-  res.json({ user });
+// GET /api/auth/me
+router.get('/me', authMiddleware, async (req, res) => {
+  try {
+    const { rows } = await query(
+      'SELECT id, email, name, plan, analyses_used, hourly_rate FROM users WHERE id = $1',
+      [req.userId]
+    );
+    const user = rows[0];
+    if (!user) return res.status(404).json({ error: 'User not found' });
+    res.json({ user });
+  } catch (err) {
+    console.error('[auth] /me error:', err.message);
+    res.status(500).json({ error: 'Failed to fetch user' });
+  }
 });
 
-// PATCH /api/auth/hourly-rate — update hourly rate for revenue calc
-router.patch('/hourly-rate', authMiddleware, (req, res) => {
+// PATCH /api/auth/hourly-rate
+router.patch('/hourly-rate', authMiddleware, async (req, res) => {
   const { hourly_rate } = req.body;
   if (typeof hourly_rate !== 'number' || hourly_rate < 0) {
     return res.status(400).json({ error: 'hourly_rate must be a non-negative number' });
   }
 
-  const db = getDb();
-  db.prepare('UPDATE users SET hourly_rate = ? WHERE id = ?').run(hourly_rate, req.userId);
-  res.json({ success: true });
+  try {
+    await query('UPDATE users SET hourly_rate = $1 WHERE id = $2', [hourly_rate, req.userId]);
+    res.json({ success: true });
+  } catch (err) {
+    console.error('[auth] hourly-rate error:', err.message);
+    res.status(500).json({ error: 'Failed to update hourly rate' });
+  }
 });
 
 module.exports = router;
