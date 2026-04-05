@@ -166,6 +166,9 @@ router.get('/contract/:contractId', authMiddleware, async (req, res) => {
 
 // GET /api/analysis/stats/summary
 router.get('/stats/summary', authMiddleware, async (req, res) => {
+  // If this log appears, authMiddleware passed — the JWT and JWT_SECRET are consistent.
+  // If you see a 401 instead, the log below will never appear and authMiddleware is rejecting the token.
+  console.log('[analysis/stats] reached handler — userId:', req.userId);
   try {
     const { rows: userRows } = await query(
       'SELECT hourly_rate, plan, analyses_used FROM users WHERE id = $1',

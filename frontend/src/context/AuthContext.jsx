@@ -56,18 +56,43 @@ export function AuthProvider({ children }) {
 
   const login = useCallback(async (email, password) => {
     const res = await api.post('/auth/login', { email, password });
-    console.log('[auth] Login — saving token to localStorage, userId:', res.data.user?.id);
-    localStorage.setItem('sg_token', res.data.token);
-    console.log('[auth] Login — token saved, setting user');
+    const token = res.data.token;
+
+    // Save token FIRST — axios interceptor reads localStorage on every request,
+    // so it must be present before setUser triggers any re-render that causes
+    // authenticated API calls (e.g. Dashboard useEffect on mount).
+    console.log('[auth] Login — saving token to localStorage at', Date.now(), 'userId:', res.data.user?.id);
+    localStorage.setItem('sg_token', token);
+
+    // Verify the token was actually written (localStorage can silently fail in
+    // private browsing on some browsers when storage quota is exceeded).
+    const saved = localStorage.getItem('sg_token');
+    if (!saved) {
+      console.error('[auth] Login — localStorage.setItem silently failed! Token not readable back.');
+    } else {
+      console.log('[auth] Login — token confirmed in localStorage, length:', saved.length);
+    }
+
+    console.log('[auth] Login — calling setUser at', Date.now());
     setUser(res.data.user);
     return res.data.user;
   }, []);
 
   const register = useCallback(async (email, password, name) => {
     const res = await api.post('/auth/register', { email, password, name });
-    console.log('[auth] Register — saving token to localStorage, userId:', res.data.user?.id);
-    localStorage.setItem('sg_token', res.data.token);
-    console.log('[auth] Register — token saved, setting user');
+    const token = res.data.token;
+
+    console.log('[auth] Register — saving token to localStorage at', Date.now(), 'userId:', res.data.user?.id);
+    localStorage.setItem('sg_token', token);
+
+    const saved = localStorage.getItem('sg_token');
+    if (!saved) {
+      console.error('[auth] Register — localStorage.setItem silently failed! Token not readable back.');
+    } else {
+      console.log('[auth] Register — token confirmed in localStorage, length:', saved.length);
+    }
+
+    console.log('[auth] Register — calling setUser at', Date.now());
     setUser(res.data.user);
     return res.data.user;
   }, []);
