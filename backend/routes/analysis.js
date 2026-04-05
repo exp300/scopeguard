@@ -58,6 +58,8 @@ router.post('/', authMiddleware, async (req, res) => {
         },
       });
 
+      console.log('[gemini] API key first 10 chars:', process.env.GEMINI_API_KEY?.substring(0, 10), 'length:', process.env.GEMINI_API_KEY?.length);
+
       const prompt =
         `CONTRACT:\n${contractText}\n\n` +
         `CLIENT REQUEST:\n${client_message.trim()}\n\n` +
