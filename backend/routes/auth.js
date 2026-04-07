@@ -194,11 +194,16 @@ router.post('/forgot-password', async (req, res) => {
 
 // POST /api/auth/reset-password
 router.post('/reset-password', async (req, res) => {
+  console.log('[auth] reset-password hit — body keys:', Object.keys(req.body));
   const { token, password } = req.body;
+  console.log('[auth] reset-password — token received:', token ? `${token.slice(0, 12)}… (${token.length} chars)` : 'MISSING');
+
   if (!token || !password) {
+    console.warn('[auth] reset-password — missing token or password');
     return res.status(400).json({ error: 'Token and new password are required' });
   }
   if (password.length < 8) {
+    console.warn('[auth] reset-password — password too short');
     return res.status(400).json({ error: 'Password must be at least 8 characters' });
   }
 
@@ -208,14 +213,17 @@ router.post('/reset-password', async (req, res) => {
       [token]
     );
     const resetToken = rows[0];
+    console.log('[auth] reset-password — DB lookup result:', resetToken ? `found (userId ${resetToken.user_id}, used ${resetToken.used}, expires ${resetToken.expires_at})` : 'NOT FOUND');
 
     if (!resetToken) {
       return res.status(400).json({ error: 'Invalid or expired reset token' });
     }
     if (resetToken.used) {
+      console.warn('[auth] reset-password — token already used, userId:', resetToken.user_id);
       return res.status(400).json({ error: 'This reset link has already been used' });
     }
     if (new Date() > new Date(resetToken.expires_at)) {
+      console.warn('[auth] reset-password — token expired at:', resetToken.expires_at);
       return res.status(400).json({ error: 'Reset link has expired. Please request a new one.' });
     }
 
@@ -223,11 +231,11 @@ router.post('/reset-password', async (req, res) => {
     await query('UPDATE users SET password_hash = $1 WHERE id = $2', [passwordHash, resetToken.user_id]);
     await query('UPDATE password_reset_tokens SET used = TRUE WHERE id = $1', [resetToken.id]);
 
-    console.log('[auth] Password reset success — userId:', resetToken.user_id);
+    console.log('[auth] reset-password success — userId:', resetToken.user_id);
 
     res.json({ message: 'Password updated successfully. You can now log in.' });
   } catch (err) {
-    console.error('[auth] reset-password error:', err.message);
+    console.error('[auth] reset-password error:', err.message, err.stack);
     res.status(500).json({ error: 'Password reset failed. Please try again.' });
   }
 });
