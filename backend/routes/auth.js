@@ -2,8 +2,12 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
+const { Resend } = require('resend');
 const { query } = require('../db/database');
 const authMiddleware = require('../middleware/auth');
+
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
+const EMAIL_FROM = process.env.EMAIL_FROM || 'onboarding@resend.dev';
 
 const router = express.Router();
 
@@ -139,7 +143,7 @@ router.post('/forgot-password', async (req, res) => {
   }
 
   // Always return 200 so we don't reveal whether the email exists
-  res.json({ message: 'If that email is registered, a reset link has been logged to the server console.' });
+  res.json({ message: 'If that email is registered, you\'ll receive a reset link shortly.' });
 
   try {
     const { rows } = await query(
@@ -158,12 +162,30 @@ router.post('/forgot-password', async (req, res) => {
     );
 
     const resetUrl = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/reset-password?token=${token}`;
+
+    if (resend) {
+      const { error: emailError } = await resend.emails.send({
+        from: EMAIL_FROM,
+        to: email.toLowerCase(),
+        subject: 'Reset your ScopeGuard password',
+        html: buildResetEmailHtml(resetUrl),
+      });
+      if (emailError) {
+        console.error('[auth] Resend error:', emailError);
+        // Fall through to console log as backup
+      } else {
+        console.log('[auth] Password reset email sent to:', email.toLowerCase());
+        return;
+      }
+    }
+
+    // Fallback: log to console when Resend is not configured
     console.log('');
-    console.log('=== PASSWORD RESET TOKEN ===');
+    console.log('=== PASSWORD RESET TOKEN (no email service configured) ===');
     console.log(`Email: ${email.toLowerCase()}`);
     console.log(`Reset URL: ${resetUrl}`);
     console.log(`Expires: ${expiresAt.toISOString()}`);
-    console.log('============================');
+    console.log('===========================================================');
     console.log('');
   } catch (err) {
     console.error('[auth] forgot-password error:', err.message);
@@ -209,5 +231,82 @@ router.post('/reset-password', async (req, res) => {
     res.status(500).json({ error: 'Password reset failed. Please try again.' });
   }
 });
+
+function buildResetEmailHtml(resetUrl) {
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reset your ScopeGuard password</title>
+</head>
+<body style="margin:0;padding:0;background:#f4f6fb;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#f4f6fb;padding:40px 0;">
+    <tr>
+      <td align="center">
+        <table width="560" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+
+          <!-- Header -->
+          <tr>
+            <td style="background:#4f6ef7;padding:32px 40px;text-align:center;">
+              <span style="font-size:36px;">🛡️</span>
+              <h1 style="margin:8px 0 0;color:#ffffff;font-size:22px;font-weight:700;letter-spacing:-0.3px;">ScopeGuard</h1>
+              <p style="margin:4px 0 0;color:rgba(255,255,255,0.75);font-size:13px;">AI Scope Creep Detector</p>
+            </td>
+          </tr>
+
+          <!-- Body -->
+          <tr>
+            <td style="padding:40px;">
+              <h2 style="margin:0 0 12px;font-size:20px;color:#111827;font-weight:600;">Reset your password</h2>
+              <p style="margin:0 0 24px;font-size:15px;color:#4b5563;line-height:1.6;">
+                We received a request to reset the password for your ScopeGuard account.
+                Click the button below to choose a new password. This link expires in <strong>1 hour</strong>.
+              </p>
+
+              <!-- CTA button -->
+              <table width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td align="center" style="padding:8px 0 32px;">
+                    <a href="${resetUrl}"
+                       style="display:inline-block;background:#4f6ef7;color:#ffffff;text-decoration:none;font-size:15px;font-weight:600;padding:14px 32px;border-radius:8px;">
+                      Reset password →
+                    </a>
+                  </td>
+                </tr>
+              </table>
+
+              <p style="margin:0 0 8px;font-size:13px;color:#9ca3af;">
+                If the button doesn't work, copy and paste this URL into your browser:
+              </p>
+              <p style="margin:0 0 32px;font-size:12px;color:#6b7280;word-break:break-all;">
+                <a href="${resetUrl}" style="color:#4f6ef7;">${resetUrl}</a>
+              </p>
+
+              <hr style="border:none;border-top:1px solid #e5e7eb;margin:0 0 24px;" />
+
+              <p style="margin:0;font-size:13px;color:#9ca3af;line-height:1.6;">
+                If you didn't request a password reset, you can safely ignore this email —
+                your password will not change. If you're concerned, please reply to this email.
+              </p>
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td style="background:#f9fafb;border-top:1px solid #f3f4f6;padding:20px 40px;text-align:center;">
+              <p style="margin:0;font-size:12px;color:#9ca3af;">
+                © ${new Date().getFullYear()} ScopeGuard · AI-powered scope creep protection for freelancers
+              </p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>`;
+}
 
 module.exports = router;

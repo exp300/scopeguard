@@ -35,18 +35,17 @@ export default function ForgotPassword() {
           {submitted ? (
             <div className="text-center">
               <p className="text-2xl mb-3">📬</p>
-              <h2 className="text-lg font-semibold text-gray-900 mb-2">Check the server logs</h2>
+              <h2 className="text-lg font-semibold text-gray-900 mb-2">Check your inbox</h2>
               <p className="text-sm text-gray-500">
-                If <strong>{email}</strong> is registered, a reset link has been logged to the server console.
-                Copy the URL from the logs to reset your password.
+                If <strong>{email}</strong> is registered, we've sent a password reset link to that address.
               </p>
-              <p className="text-xs text-gray-400 mt-3">The link expires in 1 hour.</p>
+              <p className="text-xs text-gray-400 mt-3">The link expires in 1 hour. Check your spam folder if you don't see it.</p>
             </div>
           ) : (
             <>
               <h2 className="text-lg font-semibold text-gray-900 mb-1">Forgot your password?</h2>
               <p className="text-sm text-gray-500 mb-5">
-                Enter your email and we'll log a reset link to the server console.
+                Enter your email and we'll send you a reset link.
               </p>
 
               <form onSubmit={handleSubmit} className="space-y-4">

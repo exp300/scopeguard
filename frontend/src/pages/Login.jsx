@@ -27,8 +27,10 @@ export default function Login() {
     <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-brand-50 to-white">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
-          <span className="text-4xl">🛡️</span>
-          <h1 className="text-2xl font-bold text-gray-900 mt-2">ScopeGuard</h1>
+          <Link to="/" className="inline-block hover:opacity-80 transition-opacity">
+            <span className="text-4xl">🛡️</span>
+            <h1 className="text-2xl font-bold text-gray-900 mt-2">ScopeGuard</h1>
+          </Link>
           <p className="text-gray-500 text-sm mt-1">AI-powered scope creep protection</p>
         </div>
 
