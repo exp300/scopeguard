@@ -7,6 +7,9 @@ export default function ResetPassword() {
   const navigate = useNavigate();
   const token = searchParams.get('token') || '';
 
+  console.log('[reset-password] page loaded — full search string:', window.location.search);
+  console.log('[reset-password] token from URL:', token ? `${token.slice(0, 12)}… (${token.length} chars)` : 'MISSING');
+
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
   const [loading, setLoading] = useState(false);
@@ -26,10 +29,14 @@ export default function ResetPassword() {
 
     setLoading(true);
     try {
-      await api.post('/auth/reset-password', { token, password });
+      const payload = { token, password };
+      console.log('[reset-password] POST /auth/reset-password — payload:', { token: payload.token ? `${payload.token.slice(0, 12)}… (${payload.token.length} chars)` : 'MISSING', passwordLength: payload.password.length });
+      const res = await api.post('/auth/reset-password', payload);
+      console.log('[reset-password] success — response:', res.data);
       setSuccess(true);
       setTimeout(() => navigate('/login'), 2500);
     } catch (err) {
+      console.error('[reset-password] error — status:', err.response?.status, 'body:', err.response?.data);
       setError(err.response?.data?.error || 'Password reset failed');
     } finally {
       setLoading(false);
