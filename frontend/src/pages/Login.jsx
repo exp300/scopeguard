@@ -78,6 +78,11 @@ export default function Login() {
             Create one free
           </Link>
         </p>
+        <p className="text-center text-sm text-gray-400 mt-2">
+          <Link to="/forgot-password" className="hover:text-gray-600 hover:underline">
+            Forgot password?
+          </Link>
+        </p>
       </div>
     </div>
   );

@@ -143,6 +143,65 @@ router.post('/webhook', express.raw({ type: 'application/json' }), async (req, r
   res.json({ received: true });
 });
 
+// POST /api/billing/redeem-promo
+const PROMO_CODES = {
+  PRODUCTHUNT: {
+    days: 30,
+    expiresAt: new Date('2026-05-12T23:59:59Z'), // code stops being accepted after this date
+  },
+};
+
+router.post('/redeem-promo', authMiddleware, async (req, res) => {
+  const { code } = req.body;
+  if (!code?.trim()) {
+    return res.status(400).json({ error: 'Promo code is required' });
+  }
+
+  const promo = PROMO_CODES[code.trim().toUpperCase()];
+  if (!promo) {
+    return res.status(400).json({ error: 'Invalid promo code' });
+  }
+  if (new Date() > promo.expiresAt) {
+    return res.status(400).json({ error: 'This promo code has expired' });
+  }
+
+  try {
+    const { rows: userRows } = await query('SELECT plan FROM users WHERE id = $1', [req.userId]);
+    const user = userRows[0];
+    if (user.plan === 'pro') {
+      return res.status(400).json({ error: 'You already have a Pro plan' });
+    }
+
+    // Check if already redeemed
+    const { rows: existing } = await query(
+      'SELECT id FROM promo_redemptions WHERE user_id = $1 AND code = $2',
+      [req.userId, code.trim().toUpperCase()]
+    );
+    if (existing.length > 0) {
+      return res.status(400).json({ error: 'You have already redeemed this promo code' });
+    }
+
+    const proExpiresAt = new Date(Date.now() + promo.days * 24 * 60 * 60 * 1000);
+
+    await query(
+      'INSERT INTO promo_redemptions (user_id, code, pro_expires_at) VALUES ($1, $2, $3)',
+      [req.userId, code.trim().toUpperCase(), proExpiresAt]
+    );
+    await query('UPDATE users SET plan = $1 WHERE id = $2', ['pro', req.userId]);
+
+    console.log(`[billing] Promo ${code} redeemed by userId ${req.userId} — Pro until ${proExpiresAt.toISOString()}`);
+
+    res.json({
+      success: true,
+      message: `${promo.days} days of Pro access activated!`,
+      pro_expires_at: proExpiresAt,
+    });
+  } catch (err) {
+    console.error('[billing] redeem-promo error:', err.message);
+    res.status(500).json({ error: 'Failed to redeem promo code' });
+  }
+});
+
 // GET /api/billing/status
 router.get('/status', authMiddleware, async (req, res) => {
   try {

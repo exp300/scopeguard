@@ -51,6 +51,28 @@ export default function Billing() {
     }
   }
 
+  const [promoCode, setPromoCode] = useState('');
+  const [promoLoading, setPromoLoading] = useState(false);
+  const [promoSuccess, setPromoSuccess] = useState('');
+  const [promoError, setPromoError] = useState('');
+
+  async function handleRedeemPromo(e) {
+    e.preventDefault();
+    setPromoError('');
+    setPromoSuccess('');
+    setPromoLoading(true);
+    try {
+      const res = await api.post('/billing/redeem-promo', { code: promoCode });
+      setPromoSuccess(res.data.message);
+      setPromoCode('');
+      await refreshUser();
+    } catch (err) {
+      setPromoError(err.response?.data?.error || 'Failed to redeem promo code');
+    } finally {
+      setPromoLoading(false);
+    }
+  }
+
   const isPro = user?.plan === 'pro';
   const analysesLeft = isPro ? null : Math.max(0, FREE_LIMIT - (user?.analyses_used ?? 0));
 
@@ -169,6 +191,41 @@ export default function Billing() {
       {error && (
         <div className="text-sm text-red-600 bg-red-50 border border-red-100 rounded-lg px-3 py-2">
           {error}
+        </div>
+      )}
+
+      {/* Promo code */}
+      {!isPro && (
+        <div className="card p-5">
+          <h2 className="font-semibold text-gray-900 mb-1">Have a promo code?</h2>
+          <p className="text-sm text-gray-500 mb-4">Enter a valid code to unlock free Pro access.</p>
+          <form onSubmit={handleRedeemPromo} className="flex gap-2">
+            <input
+              type="text"
+              className="input flex-1"
+              placeholder="e.g. PRODUCTHUNT"
+              value={promoCode}
+              onChange={e => setPromoCode(e.target.value.toUpperCase())}
+              disabled={promoLoading}
+            />
+            <button
+              type="submit"
+              className="btn-primary whitespace-nowrap"
+              disabled={promoLoading || !promoCode.trim()}
+            >
+              {promoLoading ? 'Redeeming…' : 'Redeem'}
+            </button>
+          </form>
+          {promoSuccess && (
+            <p className="text-sm text-green-700 bg-green-50 border border-green-200 rounded-lg px-3 py-2 mt-3">
+              {promoSuccess}
+            </p>
+          )}
+          {promoError && (
+            <p className="text-sm text-red-600 bg-red-50 border border-red-100 rounded-lg px-3 py-2 mt-3">
+              {promoError}
+            </p>
+          )}
         </div>
       )}
 

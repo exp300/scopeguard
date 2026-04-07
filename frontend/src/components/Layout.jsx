@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Outlet, NavLink, useNavigate } from 'react-router-dom';
+import { Outlet, NavLink, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 const NAV = [
@@ -30,11 +30,13 @@ export default function Layout() {
       `}>
         {/* Logo */}
         <div className="px-6 py-5 border-b border-gray-100">
-          <div className="flex items-center gap-2">
-            <span className="text-2xl">🛡️</span>
-            <span className="font-bold text-lg text-gray-900">ScopeGuard</span>
-          </div>
-          <p className="text-xs text-gray-400 mt-0.5">AI Scope Creep Detector</p>
+          <Link to="/dashboard" className="block hover:opacity-80 transition-opacity">
+            <div className="flex items-center gap-2">
+              <span className="text-2xl">🛡️</span>
+              <span className="font-bold text-lg text-gray-900">ScopeGuard</span>
+            </div>
+            <p className="text-xs text-gray-400 mt-0.5">AI Scope Creep Detector</p>
+          </Link>
         </div>
 
         {/* Nav */}

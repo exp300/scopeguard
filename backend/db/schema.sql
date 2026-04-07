@@ -1,4 +1,5 @@
 -- ScopeGuard PostgreSQL schema
+-- Run this idempotently on every startup (CREATE TABLE IF NOT EXISTS)
 
 CREATE TABLE IF NOT EXISTS users (
   id SERIAL PRIMARY KEY,
@@ -33,5 +34,23 @@ CREATE TABLE IF NOT EXISTS analyses (
   reasoning TEXT NOT NULL,
   suggested_reply TEXT NOT NULL,
   hours_at_risk REAL NOT NULL DEFAULT 0,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS promo_redemptions (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  code TEXT NOT NULL,
+  redeemed_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  pro_expires_at TIMESTAMPTZ NOT NULL,
+  UNIQUE (user_id, code)
+);
+
+CREATE TABLE IF NOT EXISTS password_reset_tokens (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  token TEXT NOT NULL UNIQUE,
+  expires_at TIMESTAMPTZ NOT NULL,
+  used BOOLEAN NOT NULL DEFAULT FALSE,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
