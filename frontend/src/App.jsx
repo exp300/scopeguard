@@ -11,6 +11,9 @@ import Analyze from './pages/Analyze';
 import History from './pages/History';
 import Billing from './pages/Billing';
 import Landing from './pages/Landing';
+import Terms from './pages/Terms';
+import Privacy from './pages/Privacy';
+import Refund from './pages/Refund';
 import Layout from './components/Layout';
 
 function ProtectedRoute({ children }) {
@@ -48,6 +51,9 @@ export default function App() {
           <Route path="/register" element={<PublicRoute><Register /></PublicRoute>} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/refund" element={<Refund />} />
 
           {/* Protected app */}
           <Route path="/" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
