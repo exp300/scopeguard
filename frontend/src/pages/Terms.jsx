@@ -20,7 +20,7 @@ export default function Terms() {
       </Section>
 
       <Section title="4. Subscription and Payment">
-        <p>ScopeGuard offers a Free tier (5 analyses) and a Pro plan at <strong>$19.00 per month</strong>. Pro subscriptions are billed monthly in advance via Stripe. All fees are non-refundable except as described in our <Link to="/refund" className="text-brand-600 hover:underline">Refund Policy</Link>.</p>
+        <p>ScopeGuard offers a Free tier (5 analyses) and a Pro plan at <strong>$19.00 per month</strong>. Pro subscriptions are billed monthly in advance. All fees are non-refundable except as described in our <Link to="/refund" className="text-brand-600 hover:underline">Refund Policy</Link>.</p>
         <p className="mt-3">We reserve the right to change pricing with 30 days' notice. Continued use after a price change constitutes acceptance of the new price.</p>
       </Section>
 
@@ -40,15 +40,15 @@ export default function Terms() {
       </Section>
 
       <Section title="7. Intellectual Property">
-        <p>The Service, including its design, code, and AI models, is owned by ScopeGuard. Your contract data and analysis history remain yours. By using the Service, you grant ScopeGuard a limited license to process your data solely to provide the Service. We do not train AI models on your contract data.</p>
+        <p>The Service, including its design, code, and AI models, is owned by Oleksandr Kolisnyk. Your contract data and analysis history remain yours. By using the Service, you grant Oleksandr Kolisnyk a limited license to process your data solely to provide the Service. We do not train AI models on your contract data.</p>
       </Section>
 
       <Section title="8. Disclaimer of Warranties">
-        <p>THE SERVICE IS PROVIDED "AS IS" WITHOUT WARRANTIES OF ANY KIND, EXPRESS OR IMPLIED. WE DO NOT WARRANT THAT THE SERVICE WILL BE UNINTERRUPTED, ERROR-FREE, OR THAT AI VERDICTS WILL BE ACCURATE. OUTPUTS ARE NOT LEGAL ADVICE — CONSULT A QUALIFIED ATTORNEY FOR LEGAL MATTERS.</p>
+        <p>THE SERVICE IS PROVIDED "AS IS" WITHOUT WARRANTIES OF ANY KIND, EXPRESS OR IMPLIED. OLEKSANDR KOLISNYK DOES NOT WARRANT THAT THE SERVICE WILL BE UNINTERRUPTED, ERROR-FREE, OR THAT AI VERDICTS WILL BE ACCURATE. OUTPUTS ARE NOT LEGAL ADVICE — CONSULT A QUALIFIED ATTORNEY FOR LEGAL MATTERS.</p>
       </Section>
 
       <Section title="9. Limitation of Liability">
-        <p>TO THE MAXIMUM EXTENT PERMITTED BY LAW, SCOPEGUARD SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, OR ANY LOSS OF REVENUE, PROFITS, OR DATA. OUR TOTAL LIABILITY SHALL NOT EXCEED THE AMOUNTS PAID BY YOU IN THE THREE MONTHS PRECEDING THE CLAIM.</p>
+        <p>TO THE MAXIMUM EXTENT PERMITTED BY LAW, OLEKSANDR KOLISNYK SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, OR ANY LOSS OF REVENUE, PROFITS, OR DATA. TOTAL LIABILITY SHALL NOT EXCEED THE AMOUNTS PAID BY YOU IN THE THREE MONTHS PRECEDING THE CLAIM.</p>
       </Section>
 
       <Section title="10. Changes to Terms">
