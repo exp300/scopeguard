@@ -1,18 +1,18 @@
 #!/usr/bin/env node
 /**
  * Article generator — reads reddit-data.json, selects the most useful posts,
- * and calls the Anthropic Claude API to write SEO articles that weave in real
+ * and calls the Google Gemini API to write SEO articles that weave in real
  * Reddit quotes (anonymised as "one freelancer shared…").
  *
  * Outputs scripts/generated-articles.json.
  *
- * Requires: ANTHROPIC_API_KEY in environment (or .env file at repo root).
+ * Requires: GEMINI_API_KEY in environment (or .env file at repo root).
  */
 
 import { readFileSync, writeFileSync, existsSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname, join, resolve } from 'path';
-import Anthropic from '@anthropic-ai/sdk';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -32,12 +32,12 @@ if (existsSync(ROOT_ENV)) {
   }
 }
 
-if (!process.env.ANTHROPIC_API_KEY) {
-  console.error('Error: ANTHROPIC_API_KEY is not set.');
+if (!process.env.GEMINI_API_KEY) {
+  console.error('Error: GEMINI_API_KEY is not set.');
   process.exit(1);
 }
 
-const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 // ---------------------------------------------------------------------------
 // Article definitions — each entry describes one piece to write
@@ -122,16 +122,16 @@ function buildResearchBrief(posts) {
 }
 
 /**
- * Call Claude to write an article.
+ * Call Gemini to write an article.
  */
 async function generateArticle(articleDef, posts) {
   const brief = buildResearchBrief(posts);
 
-  const systemPrompt = `You are an expert SEO content writer specialising in freelancing, contracts, and client management.
+  const prompt = `You are an expert SEO content writer specialising in freelancing, contracts, and client management.
 You write in a clear, direct, practical style — no fluff, no padding, real advice that freelancers can apply today.
-Your articles are optimised for search engines but written for humans first.`;
+Your articles are optimised for search engines but written for humans first.
 
-  const userPrompt = `Write a long-form SEO article for the ScopeGuard blog (scopeguard.io — an AI tool that helps freelancers detect scope creep by analysing contracts and client messages).
+Write a long-form SEO article for the ScopeGuard blog (scopeguard.io — an AI tool that helps freelancers detect scope creep by analysing contracts and client messages).
 
 **Article spec:**
 - Title: ${articleDef.title}
@@ -152,16 +152,11 @@ ${brief}
 
 Output only the HTML article content, starting with <h1> and ending with the last </p> or </ul>. No markdown, no code fences, no preamble.`;
 
-  console.log(`  Calling Claude for: "${articleDef.title}" …`);
+  console.log(`  Calling Gemini for: "${articleDef.title}" …`);
 
-  const message = await client.messages.create({
-    model: 'claude-opus-4-6',
-    max_tokens: 2048,
-    system: systemPrompt,
-    messages: [{ role: 'user', content: userPrompt }],
-  });
-
-  const content = message.content[0]?.text ?? '';
+  const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash-lite' });
+  const result = await model.generateContent(prompt);
+  const content = result.response.text() ?? '';
   return content.trim();
 }
 
