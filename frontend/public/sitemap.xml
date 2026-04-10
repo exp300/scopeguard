@@ -3,64 +3,64 @@
 
   <!-- Main pages -->
   <url>
-    <loc>https://scopeguard.io/</loc>
+    <loc>https://thescopeguard.com/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://scopeguard.io/blog</loc>
+    <loc>https://thescopeguard.com/blog</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://scopeguard.io/register</loc>
+    <loc>https://thescopeguard.com/register</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://scopeguard.io/login</loc>
+    <loc>https://thescopeguard.com/login</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://scopeguard.io/terms</loc>
+    <loc>https://thescopeguard.com/terms</loc>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://scopeguard.io/privacy</loc>
+    <loc>https://thescopeguard.com/privacy</loc>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://scopeguard.io/refund</loc>
+    <loc>https://thescopeguard.com/refund</loc>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
   </url>
 
   <!-- Blog posts -->
   <url>
-    <loc>https://scopeguard.io/blog/how-to-handle-scope-creep-as-a-freelancer</loc>
+    <loc>https://thescopeguard.com/blog/how-to-handle-scope-creep-as-a-freelancer</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://scopeguard.io/blog/what-to-say-when-client-asks-for-extra-work</loc>
+    <loc>https://thescopeguard.com/blog/what-to-say-when-client-asks-for-extra-work</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://scopeguard.io/blog/freelance-contract-exclusions-clause-examples</loc>
+    <loc>https://thescopeguard.com/blog/freelance-contract-exclusions-clause-examples</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://scopeguard.io/blog/scope-creep-costing-freelancers-money</loc>
+    <loc>https://thescopeguard.com/blog/scope-creep-costing-freelancers-money</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://scopeguard.io/blog/how-to-push-back-on-client-requests-professionally</loc>
+    <loc>https://thescopeguard.com/blog/how-to-push-back-on-client-requests-professionally</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>

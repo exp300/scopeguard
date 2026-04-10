@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://scopeguard.io/sitemap.xml
+Sitemap: https://thescopeguard.com/sitemap.xml
