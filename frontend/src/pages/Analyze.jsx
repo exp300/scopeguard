@@ -174,7 +174,7 @@ export default function Analyze() {
         >
           {loading ? (
             <>
-              <Spinner /> Analyzing with Claude…
+              <Spinner /> Analyzing…
             </>
           ) : (
             <>⚡ Analyze Scope</>
