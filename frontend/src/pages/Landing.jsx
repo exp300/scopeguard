@@ -10,6 +10,7 @@ export default function Landing() {
       <HowItWorks />
       <PainSection />
       <Pricing />
+      <PrivacySection />
       <FinalCTA />
       <Footer />
     </div>
@@ -80,6 +81,12 @@ function Hero() {
         <a href="#how" className="text-sm text-gray-400 hover:text-gray-600 transition-colors">
           See how it works ↓
         </a>
+      </div>
+
+      {/* Privacy badge */}
+      <div className="inline-flex items-center gap-2 text-xs text-gray-400 mb-10 bg-gray-50 border border-gray-200 rounded-full px-4 py-2">
+        <span>🔒</span>
+        <span>Your contracts never leave our servers unencrypted. Text is extracted for analysis only and never shared.</span>
       </div>
 
       {/* Mockup */}
@@ -409,6 +416,60 @@ function Pricing() {
             Pays for itself after one blocked request
           </p>
         </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─── Privacy Section ──────────────────────────────────────────────────── */
+function PrivacySection() {
+  const items = [
+    {
+      icon: '📄',
+      title: 'Text extraction only',
+      body: 'We extract text from your PDF to run the AI analysis. The original file is deleted from our servers immediately after parsing.',
+    },
+    {
+      icon: '🚫',
+      title: 'Never sold or shared',
+      body: 'Your contract text and analysis history are private to your account. We never sell, share, or use your data to train AI models.',
+    },
+    {
+      icon: '🔐',
+      title: 'Encrypted at rest',
+      body: 'Contract text is encrypted with AES-256 before being written to the database. Even a database leak exposes no readable contract content.',
+    },
+    {
+      icon: '🗑️',
+      title: 'Delete anytime',
+      body: 'You own your data. Delete any contract from your dashboard at any time and it is permanently removed from our database.',
+    },
+  ];
+
+  return (
+    <section className="bg-gray-50 border-y border-gray-100 py-20">
+      <div className="max-w-5xl mx-auto px-6">
+        <div className="text-center mb-12">
+          <p className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-3">Privacy</p>
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900">Your contracts stay yours</h2>
+          <p className="text-gray-500 mt-3 max-w-xl mx-auto">
+            You're uploading sensitive legal documents. Here's exactly how we handle them.
+          </p>
+        </div>
+
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {items.map(item => (
+            <div key={item.title} className="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
+              <p className="text-3xl mb-4">{item.icon}</p>
+              <h3 className="font-semibold text-gray-900 mb-2">{item.title}</h3>
+              <p className="text-sm text-gray-500 leading-relaxed">{item.body}</p>
+            </div>
+          ))}
+        </div>
+
+        <p className="text-center text-xs text-gray-400 mt-8">
+          Read our full <Link to="/privacy" className="underline hover:text-gray-600">Privacy Policy</Link> for details.
+        </p>
       </div>
     </section>
   );

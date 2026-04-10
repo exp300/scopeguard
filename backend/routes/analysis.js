@@ -2,6 +2,7 @@ const express = require('express');
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 const { query } = require('../db/database');
 const authMiddleware = require('../middleware/auth');
+const { decrypt } = require('../utils/encryption');
 
 const router = express.Router();
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
@@ -40,7 +41,7 @@ router.post('/', authMiddleware, async (req, res) => {
       return res.status(404).json({ error: 'Contract not found' });
     }
 
-    const contractText = contractRows[0].text_content.slice(0, 40000);
+    const contractText = decrypt(contractRows[0].text_content).slice(0, 40000);
 
     // Run Gemini analysis
     let result;

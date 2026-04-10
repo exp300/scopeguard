@@ -5,6 +5,7 @@ const fs = require('fs');
 const pdfParse = require('pdf-parse');
 const { query } = require('../db/database');
 const authMiddleware = require('../middleware/auth');
+const { encrypt, decrypt } = require('../utils/encryption');
 
 const router = express.Router();
 
@@ -70,7 +71,7 @@ router.post('/', authMiddleware, upload.single('pdf'), async (req, res) => {
     const { rows } = await query(
       `INSERT INTO contracts (user_id, name, filename, text_content)
        VALUES ($1, $2, $3, $4) RETURNING id, created_at`,
-      [req.userId, name.trim(), req.file.originalname, textContent]
+      [req.userId, name.trim(), req.file.originalname, encrypt(textContent)]
     );
     const contract = rows[0];
 
@@ -98,6 +99,7 @@ router.get('/:id', authMiddleware, async (req, res) => {
     );
     const contract = rows[0];
     if (!contract) return res.status(404).json({ error: 'Contract not found' });
+    contract.text_content = decrypt(contract.text_content);
     res.json({ contract });
   } catch (err) {
     console.error('[contracts] get error:', err.message);
