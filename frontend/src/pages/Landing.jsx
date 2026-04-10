@@ -455,6 +455,7 @@ function Footer() {
         <div className="flex flex-wrap items-center gap-5 text-sm text-gray-600">
           <Link to="/login" className="hover:text-gray-400 transition-colors">Sign in</Link>
           <Link to="/register" className="hover:text-gray-400 transition-colors">Register</Link>
+          <Link to="/blog" className="hover:text-gray-400 transition-colors">Blog</Link>
           <span className="text-gray-800">·</span>
           <Link to="/terms" className="hover:text-gray-400 transition-colors">Terms</Link>
           <Link to="/privacy" className="hover:text-gray-400 transition-colors">Privacy</Link>

@@ -14,6 +14,8 @@ import Landing from './pages/Landing';
 import Terms from './pages/Terms';
 import Privacy from './pages/Privacy';
 import Refund from './pages/Refund';
+import Blog from './pages/Blog';
+import BlogPost from './pages/BlogPost';
 import Layout from './components/Layout';
 
 function ProtectedRoute({ children }) {
@@ -54,6 +56,8 @@ export default function App() {
           <Route path="/terms" element={<Terms />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/refund" element={<Refund />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:slug" element={<BlogPost />} />
 
           {/* Protected app */}
           <Route path="/" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
