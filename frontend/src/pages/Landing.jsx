@@ -9,6 +9,7 @@ export default function Landing() {
       <SocialProof />
       <HowItWorks />
       <PainSection />
+      <Calculator />
       <Pricing />
       <PrivacySection />
       <FinalCTA />
@@ -346,6 +347,118 @@ function PainSection() {
         </div>
       </div>
     </section>
+  );
+}
+
+/* ─── Calculator ───────────────────────────────────────────────────────── */
+function Calculator() {
+  const [rate, setRate]     = useState(75);
+  const [projects, setProjects] = useState(10);
+  const [hours, setHours]   = useState(8);
+
+  const lossPerYear   = rate * hours * projects;
+  const scopeguardCost = 19 * 12; // $228/year
+  const daysToPayOff  = Math.ceil(scopeguardCost / (lossPerYear / 365));
+
+  return (
+    <section className="py-20 bg-white">
+      <div className="max-w-3xl mx-auto px-6">
+        <div className="text-center mb-10">
+          <p className="text-xs font-bold uppercase tracking-widest text-red-500 mb-3">Scope Creep Calculator</p>
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900">How much are you leaving on the table?</h2>
+          <p className="text-gray-500 mt-3">Drag the sliders to see your real numbers.</p>
+        </div>
+
+        <div className="bg-gray-50 border border-gray-200 rounded-2xl p-8 space-y-8">
+          {/* Sliders */}
+          <Slider
+            label="Your hourly rate"
+            value={rate}
+            min={25} max={250} step={5}
+            format={v => `$${v}`}
+            onChange={setRate}
+          />
+          <Slider
+            label="Projects per year"
+            value={projects}
+            min={2} max={40} step={1}
+            format={v => `${v} projects`}
+            onChange={setProjects}
+          />
+          <Slider
+            label="Unpaid hours per project"
+            value={hours}
+            min={1} max={30} step={1}
+            format={v => `${v} hrs`}
+            onChange={setHours}
+          />
+
+          {/* Result */}
+          <div className="bg-white rounded-xl border-2 border-red-200 p-6 text-center">
+            <p className="text-sm text-gray-500 mb-1">You're losing approximately</p>
+            <p className="text-5xl font-extrabold text-red-500 tracking-tight mb-1">
+              ${lossPerYear.toLocaleString()}
+              <span className="text-2xl font-semibold text-red-400">/year</span>
+            </p>
+            <p className="text-sm text-gray-400 mt-1 mb-5">
+              {hours} unpaid hrs × {projects} projects × ${rate}/hr
+            </p>
+            <div className="h-px bg-gray-100 mb-5" />
+            <p className="text-sm text-gray-600">
+              ScopeGuard Pro costs{' '}
+              <span className="font-semibold text-gray-800">$228/year</span>.
+              {daysToPayOff <= 365 ? (
+                <>
+                  {' '}At your rate it pays for itself in{' '}
+                  <span className="font-bold text-brand-600">{daysToPayOff} {daysToPayOff === 1 ? 'day' : 'days'}</span>.
+                </>
+              ) : (
+                <> That's less than 2% of your annual scope creep losses.</>
+              )}
+            </p>
+          </div>
+
+          <div className="text-center">
+            <Link
+              to="/register"
+              className="inline-block btn-primary px-8 py-3 text-base shadow-lg shadow-brand-500/20"
+            >
+              Stop the bleeding — Try Free
+            </Link>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Slider({ label, value, min, max, step, format, onChange }) {
+  const pct = ((value - min) / (max - min)) * 100;
+  return (
+    <div>
+      <div className="flex items-center justify-between mb-2">
+        <label className="text-sm font-medium text-gray-700">{label}</label>
+        <span className="text-sm font-bold text-gray-900 bg-white border border-gray-200 rounded-lg px-3 py-1 min-w-[80px] text-center">
+          {format(value)}
+        </span>
+      </div>
+      <div className="relative">
+        <input
+          type="range"
+          min={min} max={max} step={step}
+          value={value}
+          onChange={e => onChange(Number(e.target.value))}
+          className="w-full h-2 rounded-full appearance-none cursor-pointer"
+          style={{
+            background: `linear-gradient(to right, #4f6ef7 ${pct}%, #e5e7eb ${pct}%)`,
+          }}
+        />
+      </div>
+      <div className="flex justify-between text-xs text-gray-400 mt-1">
+        <span>{format(min)}</span>
+        <span>{format(max)}</span>
+      </div>
+    </div>
   );
 }
 
