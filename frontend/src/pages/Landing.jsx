@@ -149,7 +149,7 @@ function MockupUI() {
           </div>
           <div className="flex-1 mx-3">
             <div className="bg-white border border-gray-200 rounded-md px-3 py-1 text-xs text-gray-400 text-center">
-              app.scopeguard.io/analyze
+              thescopeguard.com/analyze
             </div>
           </div>
         </div>
