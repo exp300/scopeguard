@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useTranslation } from 'react-i18next';
 import api from '../api';
 import ContractUploadModal from '../components/ContractUploadModal';
 import VerdictBadge from '../components/VerdictBadge';
 
 export default function Dashboard() {
   const { user, refreshUser } = useAuth();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [contracts, setContracts] = useState([]);
   const [recentAnalyses, setRecentAnalyses] = useState([]);
@@ -47,11 +49,11 @@ export default function Dashboard() {
       {/* Page header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
-          <p className="text-gray-500 text-sm mt-0.5">Welcome back, {user?.name}</p>
+          <h1 className="text-2xl font-bold text-gray-900">{t('dashboard_title')}</h1>
+          <p className="text-gray-500 text-sm mt-0.5">{t('dashboard_welcome')} {user?.name}</p>
         </div>
         <button onClick={() => setUploadOpen(true)} className="btn-primary flex items-center gap-2">
-          <span className="text-lg leading-none">+</span> Upload Contract
+          <span className="text-lg leading-none">+</span> {t('dashboard_upload_contract')}
         </button>
       </div>
 
@@ -65,17 +67,17 @@ export default function Dashboard() {
           <div>
             <p className="text-sm font-medium text-gray-800">
               {stats?.analyses_used >= FREE_LIMIT
-                ? 'Free tier limit reached'
-                : `Free tier: ${stats?.analyses_used ?? 0} / ${FREE_LIMIT} analyses used`}
+                ? t('dashboard_free_limit_reached')
+                : t('dashboard_free_usage', { used: stats?.analyses_used ?? 0, limit: FREE_LIMIT })}
             </p>
             <p className="text-xs text-gray-500 mt-0.5">
               {stats?.analyses_used >= FREE_LIMIT
-                ? 'Upgrade to Pro to run unlimited analyses'
-                : `${FREE_LIMIT - (stats?.analyses_used ?? 0)} analyses remaining`}
+                ? t('dashboard_upgrade_cta')
+                : t('dashboard_free_remaining', { n: FREE_LIMIT - (stats?.analyses_used ?? 0) })}
             </p>
           </div>
           <Link to="/billing" className="btn-primary text-sm px-3 py-1.5">
-            Upgrade — $19/mo
+            {t('dashboard_upgrade_btn')}
           </Link>
         </div>
       )}
@@ -83,26 +85,26 @@ export default function Dashboard() {
       {/* Stats row */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard
-          label="Revenue Protected"
+          label={t('dashboard_stat_revenue')}
           value={`$${(stats?.revenue_protected || 0).toLocaleString()}`}
-          sub="based on your hourly rate"
+          sub={t('dashboard_stat_revenue_sub')}
           highlight
         />
         <StatCard
-          label="Analyses Run"
+          label={t('dashboard_stat_analyses')}
           value={stats?.total_analyses ?? 0}
-          sub="all time"
+          sub={t('dashboard_stat_analyses_sub')}
         />
         <StatCard
-          label="Out-of-Scope Caught"
+          label={t('dashboard_stat_blocked')}
           value={stats?.out_of_scope_count ?? 0}
-          sub="requests blocked"
+          sub={t('dashboard_stat_blocked_sub')}
           color="red"
         />
         <StatCard
-          label="Contracts"
+          label={t('dashboard_stat_contracts')}
           value={contracts.length}
-          sub="active projects"
+          sub={t('dashboard_stat_contracts_sub')}
         />
       </div>
 
@@ -116,10 +118,10 @@ export default function Dashboard() {
         {/* Contracts list — 3 cols */}
         <div className="lg:col-span-3 card p-5">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="font-semibold text-gray-900">Your Contracts</h2>
+            <h2 className="font-semibold text-gray-900">{t('dashboard_contracts_title')}</h2>
             {contracts.length > 0 && (
               <button onClick={() => setUploadOpen(true)} className="text-xs text-brand-600 hover:underline">
-                + Add new
+                {t('dashboard_contracts_add')}
               </button>
             )}
           </div>
@@ -134,7 +136,7 @@ export default function Dashboard() {
                     <span className="text-xl">📄</span>
                     <div className="min-w-0">
                       <p className="text-sm font-medium text-gray-900 truncate">{c.name}</p>
-                      <p className="text-xs text-gray-400">{c.analysis_count} {c.analysis_count === 1 ? 'analysis' : 'analyses'} · {fmtDate(c.created_at)}</p>
+                      <p className="text-xs text-gray-400">{c.analysis_count} {c.analysis_count === 1 ? t('dashboard_analysis_singular') : t('dashboard_analysis_plural')} · {fmtDate(c.created_at)}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-2 shrink-0 ml-3">
@@ -142,7 +144,7 @@ export default function Dashboard() {
                       onClick={() => navigate(`/analyze/${c.id}`)}
                       className="text-xs btn-secondary py-1 px-2.5"
                     >
-                      Analyze
+                      {t('dashboard_analyze_btn')}
                     </button>
                     <button
                       onClick={() => handleDeleteContract(c.id)}
@@ -161,14 +163,14 @@ export default function Dashboard() {
         {/* Recent analyses — 2 cols */}
         <div className="lg:col-span-2 card p-5">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="font-semibold text-gray-900">Recent Analyses</h2>
+            <h2 className="font-semibold text-gray-900">{t('dashboard_analyses_title')}</h2>
             {recentAnalyses.length > 0 && (
-              <Link to="/history" className="text-xs text-brand-600 hover:underline">View all</Link>
+              <Link to="/history" className="text-xs text-brand-600 hover:underline">{t('dashboard_analyses_view_all')}</Link>
             )}
           </div>
 
           {recentAnalyses.length === 0 ? (
-            <p className="text-sm text-gray-400 text-center py-6">No analyses yet</p>
+            <p className="text-sm text-gray-400 text-center py-6">{t('dashboard_no_analyses')}</p>
           ) : (
             <ul className="space-y-3">
               {recentAnalyses.map(a => (
@@ -211,19 +213,21 @@ function StatCard({ label, value, sub, highlight, color }) {
 }
 
 function EmptyContracts({ onUpload }) {
+  const { t } = useTranslation();
   return (
     <div className="text-center py-8">
       <p className="text-3xl mb-2">📋</p>
-      <p className="text-sm font-medium text-gray-700">No contracts yet</p>
-      <p className="text-xs text-gray-400 mt-1 mb-4">Upload a PDF contract to get started</p>
+      <p className="text-sm font-medium text-gray-700">{t('dashboard_empty_title')}</p>
+      <p className="text-xs text-gray-400 mt-1 mb-4">{t('dashboard_empty_sub')}</p>
       <button onClick={onUpload} className="btn-primary text-sm">
-        Upload your first contract
+        {t('dashboard_empty_btn')}
       </button>
     </div>
   );
 }
 
 function HourlyRatePrompt({ onUpdated }) {
+  const { t } = useTranslation();
   const [rate, setRate] = useState('');
   const [saving, setSaving] = useState(false);
 
@@ -239,8 +243,8 @@ function HourlyRatePrompt({ onUpdated }) {
     <div className="card p-4 flex items-center gap-4 border-dashed">
       <span className="text-2xl">💰</span>
       <div className="flex-1">
-        <p className="text-sm font-medium text-gray-800">Set your hourly rate to track revenue protected</p>
-        <p className="text-xs text-gray-400">We'll calculate how much each out-of-scope request would've cost you</p>
+        <p className="text-sm font-medium text-gray-800">{t('dashboard_rate_title')}</p>
+        <p className="text-xs text-gray-400">{t('dashboard_rate_sub')}</p>
       </div>
       <div className="flex items-center gap-2 shrink-0">
         <span className="text-sm text-gray-500">$</span>
@@ -254,7 +258,7 @@ function HourlyRatePrompt({ onUpdated }) {
         />
         <span className="text-sm text-gray-500">/hr</span>
         <button onClick={save} disabled={saving} className="btn-primary text-sm py-1.5 px-3">
-          {saving ? 'Saving…' : 'Save'}
+          {saving ? t('dashboard_rate_saving') : t('dashboard_rate_save')}
         </button>
       </div>
     </div>

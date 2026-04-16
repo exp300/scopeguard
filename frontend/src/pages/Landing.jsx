@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import LanguageSwitcher from '../components/LanguageSwitcher';
 
 export default function Landing() {
   return (
@@ -20,6 +22,7 @@ export default function Landing() {
 
 /* ─── Nav ─────────────────────────────────────────────────────────────── */
 function Nav() {
+  const { t } = useTranslation();
   return (
     <header className="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-gray-100">
       <div className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
@@ -27,12 +30,13 @@ function Nav() {
           <span className="text-xl">🛡️</span>
           <span className="font-bold text-gray-900">ScopeGuard</span>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-4">
+          <LanguageSwitcher light />
           <Link to="/login" className="text-sm text-gray-500 hover:text-gray-800 transition-colors">
-            Sign in
+            {t('landing_nav_signin')}
           </Link>
           <Link to="/register" className="btn-primary text-sm py-1.5 px-4">
-            Try Free
+            {t('landing_nav_try_free')}
           </Link>
         </div>
       </div>
@@ -42,20 +46,21 @@ function Nav() {
 
 /* ─── Hero ─────────────────────────────────────────────────────────────── */
 function Hero() {
+  const { t } = useTranslation();
   return (
     <section className="max-w-5xl mx-auto px-6 pt-20 pb-16 text-center">
       {/* Badge */}
       <div className="inline-flex items-center gap-2 bg-red-50 text-red-600 text-xs font-semibold px-3 py-1.5 rounded-full mb-6 border border-red-100">
         <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
-        57% of freelancers lose $10,000/year to scope creep
+        {t('hero_badge')}
       </div>
 
       {/* Headline */}
       <h1 className="text-5xl sm:text-6xl font-extrabold text-gray-900 leading-tight tracking-tight mb-5">
-        Stop Working{' '}
+        {t('hero_headline_1')}{' '}
         <span className="relative inline-block">
           <span className="relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-brand-500 to-brand-700">
-            for Free
+            {t('hero_headline_2')}
           </span>
           {/* underline squiggle */}
           <svg className="absolute -bottom-1 left-0 w-full" viewBox="0 0 200 8" fill="none" preserveAspectRatio="none">
@@ -66,9 +71,8 @@ function Hero() {
 
       {/* Sub */}
       <p className="text-xl text-gray-500 max-w-2xl mx-auto mb-8 leading-relaxed">
-        Paste any client message. ScopeGuard reads your contract and tells you instantly —
-        in scope or out. With a{' '}
-        <span className="text-gray-800 font-medium">ready-to-send reply</span>.
+        {t('hero_sub')}{' '}
+        <span className="text-gray-800 font-medium">{t('hero_sub_bold')}</span>.
       </p>
 
       {/* CTA */}
@@ -77,17 +81,17 @@ function Hero() {
           to="/register"
           className="btn-primary text-base px-8 py-3 shadow-lg shadow-brand-500/20 hover:shadow-brand-500/30 transition-shadow"
         >
-          Try Free — No Credit Card
+          {t('hero_cta')}
         </Link>
         <a href="#how" className="text-sm text-gray-400 hover:text-gray-600 transition-colors">
-          See how it works ↓
+          {t('hero_how')}
         </a>
       </div>
 
       {/* Privacy badge */}
       <div className="inline-flex items-center gap-2 text-xs text-gray-400 mb-10 bg-gray-50 border border-gray-200 rounded-full px-4 py-2">
         <span>🔒</span>
-        <span>Your contracts never leave our servers unencrypted. Text is extracted for analysis only and never shared.</span>
+        <span>{t('hero_privacy')}</span>
       </div>
 
       {/* Mockup */}
@@ -97,25 +101,26 @@ function Hero() {
 }
 
 function MockupUI() {
+  const { t } = useTranslation();
   const [active, setActive] = useState('out'); // 'in' | 'out' | 'ambiguous'
 
   const tabs = [
-    { id: 'out',       label: '🚫 Out of Scope', color: 'text-red-600' },
-    { id: 'in',        label: '✅ In Scope',     color: 'text-green-600' },
-    { id: 'ambiguous', label: '⚠️ Ambiguous',    color: 'text-yellow-600' },
+    { id: 'out',       label: t('mockup_tab_out'),       color: 'text-red-600' },
+    { id: 'in',        label: t('mockup_tab_in'),        color: 'text-green-600' },
+    { id: 'ambiguous', label: t('mockup_tab_ambiguous'), color: 'text-yellow-600' },
   ];
 
   const results = {
     out: {
-      badge: { bg: 'bg-red-100', text: 'text-red-700', dot: 'bg-red-500', label: 'Out of Scope' },
+      badge: { bg: 'bg-red-100', text: 'text-red-700', dot: 'bg-red-500', label: t('mockup_verdict_out') },
       confidence: 94,
-      message: '"While you\'re at it, can you also redesign the mobile nav and add a dark mode toggle? Shouldn\'t take long."',
+      message: '"While you\'s at it, can you also redesign the mobile nav and add a dark mode toggle? Shouldn\'t take long."',
       clause: '"Deliverables are limited to the homepage, about page, and contact form as specified in Section 2.1."',
       reasoning: 'Mobile navigation redesign and dark mode are not mentioned anywhere in the contract scope. These are new features that would require a separate agreement.',
       reply: 'Hi! Those are great ideas — dark mode and mobile nav redesign aren\'t included in our current agreement (Section 2.1). I\'d love to add them in a follow-up project. I can send over a quick quote if you\'re interested!',
     },
     in: {
-      badge: { bg: 'bg-green-100', text: 'text-green-700', dot: 'bg-green-500', label: 'In Scope' },
+      badge: { bg: 'bg-green-100', text: 'text-green-700', dot: 'bg-green-500', label: t('mockup_verdict_in') },
       confidence: 91,
       message: '"Can you fix the button alignment issue on the contact form? It looks off on mobile."',
       clause: '"Contractor will fix bugs and visual inconsistencies reported within 14 days of delivery (Section 4.2 — Revisions)."',
@@ -123,7 +128,7 @@ function MockupUI() {
       reply: 'Absolutely, happy to fix that! I\'ll get the contact form button alignment sorted on mobile and send you an updated version shortly.',
     },
     ambiguous: {
-      badge: { bg: 'bg-yellow-100', text: 'text-yellow-700', dot: 'bg-yellow-500', label: 'Ambiguous' },
+      badge: { bg: 'bg-yellow-100', text: 'text-yellow-700', dot: 'bg-yellow-500', label: t('mockup_verdict_ambiguous') },
       confidence: 58,
       message: '"Can you make the site more professional looking? The client wants it to feel more premium."',
       clause: '"Contractor will deliver a design consistent with the approved mockups (Section 2.3)."',
@@ -156,17 +161,17 @@ function MockupUI() {
 
         {/* Verdict toggle tabs */}
         <div className="flex border-b border-gray-100 bg-gray-50/50">
-          {tabs.map(t => (
+          {tabs.map(tab => (
             <button
-              key={t.id}
-              onClick={() => setActive(t.id)}
+              key={tab.id}
+              onClick={() => setActive(tab.id)}
               className={`flex-1 py-2.5 text-xs font-semibold transition-colors ${
-                active === t.id
-                  ? `${t.color} bg-white border-b-2 border-current`
+                active === tab.id
+                  ? `${tab.color} bg-white border-b-2 border-current`
                   : 'text-gray-400 hover:text-gray-600'
               }`}
             >
-              {t.label}
+              {tab.label}
             </button>
           ))}
         </div>
@@ -174,7 +179,7 @@ function MockupUI() {
         <div className="p-5 space-y-4">
           {/* Client message input */}
           <div>
-            <p className="text-xs font-medium text-gray-400 mb-1.5">Client Message</p>
+            <p className="text-xs font-medium text-gray-400 mb-1.5">{t('mockup_client_message')}</p>
             <div className="bg-gray-50 rounded-lg px-3 py-2.5 text-sm text-gray-600 border border-gray-100 italic">
               {r.message}
             </div>
@@ -187,14 +192,14 @@ function MockupUI() {
                 <span className={`w-1.5 h-1.5 rounded-full ${r.badge.dot}`} />
                 {r.badge.label}
               </span>
-              <span className="text-xs text-gray-400">Confidence: {r.confidence}%</span>
+              <span className="text-xs text-gray-400">{t('mockup_confidence')}: {r.confidence}%</span>
             </div>
             <p className="text-xs text-gray-600">{r.reasoning}</p>
           </div>
 
           {/* Clause */}
           <div>
-            <p className="text-xs font-medium text-gray-400 mb-1.5">📋 Relevant Clause</p>
+            <p className="text-xs font-medium text-gray-400 mb-1.5">{t('mockup_relevant_clause')}</p>
             <blockquote className="text-xs text-gray-600 italic border-l-3 border-brand-200 pl-3 py-0.5 bg-brand-50/40 rounded-r">
               {r.clause}
             </blockquote>
@@ -203,8 +208,8 @@ function MockupUI() {
           {/* Reply */}
           <div>
             <div className="flex items-center justify-between mb-1.5">
-              <p className="text-xs font-medium text-gray-400">✉️ Suggested Reply</p>
-              <span className="text-xs text-brand-500 font-medium cursor-default">Copy →</span>
+              <p className="text-xs font-medium text-gray-400">{t('mockup_suggested_reply')}</p>
+              <span className="text-xs text-brand-500 font-medium cursor-default">{t('mockup_copy')}</span>
             </div>
             <div className="bg-gray-50 rounded-lg px-3 py-2.5 text-xs text-gray-600 border border-gray-100 leading-relaxed">
               {r.reply}
@@ -218,16 +223,17 @@ function MockupUI() {
 
 /* ─── Social Proof ─────────────────────────────────────────────────────── */
 function SocialProof() {
+  const { t } = useTranslation();
   return (
     <section className="bg-gray-950 text-white py-14">
       <div className="max-w-5xl mx-auto px-6">
         <div className="grid sm:grid-cols-3 gap-8 text-center">
-          <Stat number="57%" label="of freelancers lose money" sub="to unpaid scope creep every year" />
-          <Stat number="$10,000" label="lost per freelancer" sub="in unbilled out-of-scope work annually" highlight />
-          <Stat number="$650/mo" label="protected on average" sub="by ScopeGuard users who track revenue" />
+          <Stat number={t('stat_1_number')} label={t('stat_1_label')} sub={t('stat_1_sub')} />
+          <Stat number={t('stat_2_number')} label={t('stat_2_label')} sub={t('stat_2_sub')} highlight />
+          <Stat number={t('stat_3_number')} label={t('stat_3_label')} sub={t('stat_3_sub')} />
         </div>
         <p className="text-center text-xs text-gray-600 mt-8">
-          Sources: Ignition 2025 Freelance Report · PMI Scope Creep Survey
+          {t('stats_source')}
         </p>
       </div>
     </section>
@@ -248,33 +254,20 @@ function Stat({ number, label, sub, highlight }) {
 
 /* ─── How It Works ─────────────────────────────────────────────────────── */
 function HowItWorks() {
+  const { t } = useTranslation();
+
   const steps = [
-    {
-      icon: '📄',
-      step: '01',
-      title: 'Upload your contract',
-      desc: 'Drop in your PDF once per project. ScopeGuard extracts and remembers every clause.',
-    },
-    {
-      icon: '💬',
-      step: '02',
-      title: 'Paste the client message',
-      desc: 'Copy-paste their email, Slack message, or WhatsApp text. Exactly as written.',
-    },
-    {
-      icon: '⚡',
-      step: '03',
-      title: 'Get an instant verdict',
-      desc: 'In scope, out of scope, or ambiguous — with the exact clause cited and a reply ready to send.',
-    },
+    { icon: '📄', step: '01', title: t('how_step1_title'), desc: t('how_step1_desc') },
+    { icon: '💬', step: '02', title: t('how_step2_title'), desc: t('how_step2_desc') },
+    { icon: '⚡', step: '03', title: t('how_step3_title'), desc: t('how_step3_desc') },
   ];
 
   return (
     <section id="how" className="max-w-5xl mx-auto px-6 py-20">
       <div className="text-center mb-12">
-        <p className="text-xs font-bold uppercase tracking-widest text-brand-500 mb-3">How it works</p>
+        <p className="text-xs font-bold uppercase tracking-widest text-brand-500 mb-3">{t('how_label')}</p>
         <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900">
-          From message to answer in 10 seconds
+          {t('how_headline')}
         </h2>
       </div>
 
@@ -301,28 +294,21 @@ function HowItWorks() {
 
 /* ─── Pain Section ─────────────────────────────────────────────────────── */
 function PainSection() {
+  const { t } = useTranslation();
+
   const quotes = [
-    {
-      text: '"Client wants one small change for the 8th time this week. Still calls it a minor tweak."',
-      handle: 'r/freelance · 4.2k upvotes',
-    },
-    {
-      text: '"They said the logo wasn\'t included in the project. Now they want three versions and a brand guide."',
-      handle: 'r/webdev · 2.8k upvotes',
-    },
-    {
-      text: '"I feel too awkward to push back so I just do it for free and resent the client for a week."',
-      handle: 'r/freelance · 6.1k upvotes',
-    },
+    { text: t('pain_quote_1'), handle: t('pain_quote_1_handle') },
+    { text: t('pain_quote_2'), handle: t('pain_quote_2_handle') },
+    { text: t('pain_quote_3'), handle: t('pain_quote_3_handle') },
   ];
 
   return (
     <section className="bg-gray-50 border-y border-gray-100 py-20">
       <div className="max-w-5xl mx-auto px-6">
         <div className="text-center mb-12">
-          <p className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-3">The reality</p>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900">Sound familiar?</h2>
-          <p className="text-gray-500 mt-3">Real complaints from the freelance community — thousands of upvotes each.</p>
+          <p className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-3">{t('pain_label')}</p>
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900">{t('pain_headline')}</h2>
+          <p className="text-gray-500 mt-3">{t('pain_sub')}</p>
         </div>
 
         <div className="grid sm:grid-cols-3 gap-5">
@@ -341,7 +327,7 @@ function PainSection() {
         <div className="mt-10 text-center">
           <div className="inline-block bg-white border border-gray-200 rounded-2xl px-6 py-4 shadow-sm">
             <p className="text-base font-semibold text-gray-800">
-              ScopeGuard gives you the answer you already know — <span className="text-brand-600">but with your contract to back it up.</span>
+              {t('pain_cta')} <span className="text-brand-600">{t('pain_cta_bold')}</span>
             </p>
           </div>
         </div>
@@ -352,6 +338,7 @@ function PainSection() {
 
 /* ─── Calculator ───────────────────────────────────────────────────────── */
 function Calculator() {
+  const { t } = useTranslation();
   const [rate, setRate]     = useState(75);
   const [projects, setProjects] = useState(10);
   const [hours, setHours]   = useState(8);
@@ -364,56 +351,56 @@ function Calculator() {
     <section className="py-20 bg-white">
       <div className="max-w-3xl mx-auto px-6">
         <div className="text-center mb-10">
-          <p className="text-xs font-bold uppercase tracking-widest text-red-500 mb-3">Scope Creep Calculator</p>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900">How much are you leaving on the table?</h2>
-          <p className="text-gray-500 mt-3">Drag the sliders to see your real numbers.</p>
+          <p className="text-xs font-bold uppercase tracking-widest text-red-500 mb-3">{t('calc_label')}</p>
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900">{t('calc_headline')}</h2>
+          <p className="text-gray-500 mt-3">{t('calc_sub')}</p>
         </div>
 
         <div className="bg-gray-50 border border-gray-200 rounded-2xl p-8 space-y-8">
           {/* Sliders */}
           <Slider
-            label="Your hourly rate"
+            label={t('calc_slider_rate')}
             value={rate}
             min={25} max={250} step={5}
             format={v => `$${v}`}
             onChange={setRate}
           />
           <Slider
-            label="Projects per year"
+            label={t('calc_slider_projects')}
             value={projects}
             min={2} max={40} step={1}
-            format={v => `${v} projects`}
+            format={v => `${v} ${t('calc_slider_projects_unit')}`}
             onChange={setProjects}
           />
           <Slider
-            label="Unpaid hours per project"
+            label={t('calc_slider_hours')}
             value={hours}
             min={1} max={30} step={1}
-            format={v => `${v} hrs`}
+            format={v => `${v} ${t('calc_slider_hours_unit')}`}
             onChange={setHours}
           />
 
           {/* Result */}
           <div className="bg-white rounded-xl border-2 border-red-200 p-6 text-center">
-            <p className="text-sm text-gray-500 mb-1">You're losing approximately</p>
+            <p className="text-sm text-gray-500 mb-1">{t('calc_losing')}</p>
             <p className="text-5xl font-extrabold text-red-500 tracking-tight mb-1">
               ${lossPerYear.toLocaleString()}
-              <span className="text-2xl font-semibold text-red-400">/year</span>
+              <span className="text-2xl font-semibold text-red-400">{t('calc_per_year')}</span>
             </p>
             <p className="text-sm text-gray-400 mt-1 mb-5">
               {hours} unpaid hrs × {projects} projects × ${rate}/hr
             </p>
             <div className="h-px bg-gray-100 mb-5" />
             <p className="text-sm text-gray-600">
-              ScopeGuard Pro costs{' '}
+              {t('calc_scopeguard_cost')}{' '}
               <span className="font-semibold text-gray-800">$228/year</span>.
               {daysToPayOff <= 365 ? (
                 <>
-                  {' '}At your rate it pays for itself in{' '}
-                  <span className="font-bold text-brand-600">{daysToPayOff} {daysToPayOff === 1 ? 'day' : 'days'}</span>.
+                  {' '}{t('calc_pays_off')}{' '}
+                  <span className="font-bold text-brand-600">{daysToPayOff} {daysToPayOff === 1 ? t('calc_day') : t('calc_days')}</span>.
                 </>
               ) : (
-                <> That's less than 2% of your annual scope creep losses.</>
+                <> {t('calc_less_than')}</>
               )}
             </p>
           </div>
@@ -423,7 +410,7 @@ function Calculator() {
               to="/register"
               className="inline-block btn-primary px-8 py-3 text-base shadow-lg shadow-brand-500/20"
             >
-              Stop the bleeding — Try Free
+              {t('calc_cta')}
             </Link>
           </div>
         </div>
@@ -464,27 +451,29 @@ function Slider({ label, value, min, max, step, format, onChange }) {
 
 /* ─── Pricing ──────────────────────────────────────────────────────────── */
 function Pricing() {
+  const { t } = useTranslation();
+
   return (
     <section className="max-w-5xl mx-auto px-6 py-20">
       <div className="text-center mb-12">
-        <p className="text-xs font-bold uppercase tracking-widest text-brand-500 mb-3">Pricing</p>
-        <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900">Simple, honest pricing</h2>
-        <p className="text-gray-500 mt-3">Start free. Upgrade when you're protecting real money.</p>
+        <p className="text-xs font-bold uppercase tracking-widest text-brand-500 mb-3">{t('pricing_label')}</p>
+        <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900">{t('pricing_headline')}</h2>
+        <p className="text-gray-500 mt-3">{t('pricing_sub')}</p>
       </div>
 
       <div className="grid sm:grid-cols-2 gap-6 max-w-2xl mx-auto">
         {/* Free */}
         <div className="card p-7 flex flex-col">
-          <p className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-1">Free</p>
-          <p className="text-4xl font-extrabold text-gray-900 mb-1">$0</p>
-          <p className="text-sm text-gray-400 mb-6">Forever free, no card needed</p>
+          <p className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-1">{t('pricing_free_tier')}</p>
+          <p className="text-4xl font-extrabold text-gray-900 mb-1">{t('pricing_free_price')}</p>
+          <p className="text-sm text-gray-400 mb-6">{t('pricing_free_sub')}</p>
           <ul className="space-y-3 flex-1 mb-7">
             {[
-              '5 scope analyses',
-              'Unlimited contract uploads',
-              'AI verdict + clause citation',
-              'Suggested client replies',
-              'Analysis history',
+              t('pricing_free_f1'),
+              t('pricing_free_f2'),
+              t('pricing_free_f3'),
+              t('pricing_free_f4'),
+              t('pricing_free_f5'),
             ].map(f => (
               <li key={f} className="flex items-start gap-2.5 text-sm text-gray-600">
                 <span className="text-gray-300 mt-0.5">✓</span> {f}
@@ -492,7 +481,7 @@ function Pricing() {
             ))}
           </ul>
           <Link to="/register" className="btn-secondary w-full text-center text-sm py-2.5">
-            Get started free
+            {t('pricing_free_cta')}
           </Link>
         </div>
 
@@ -500,22 +489,22 @@ function Pricing() {
         <div className="relative card p-7 flex flex-col border-2 border-brand-400 bg-brand-50/20">
           <div className="absolute -top-3 left-1/2 -translate-x-1/2">
             <span className="bg-brand-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow">
-              Most popular
+              {t('pricing_pro_badge')}
             </span>
           </div>
-          <p className="text-xs font-bold uppercase tracking-widest text-brand-500 mb-1">Pro</p>
+          <p className="text-xs font-bold uppercase tracking-widest text-brand-500 mb-1">{t('pricing_pro_tier')}</p>
           <div className="flex items-end gap-1 mb-1">
-            <p className="text-4xl font-extrabold text-gray-900">$19</p>
-            <p className="text-sm text-gray-400 mb-1.5">/month</p>
+            <p className="text-4xl font-extrabold text-gray-900">{t('pricing_pro_price')}</p>
+            <p className="text-sm text-gray-400 mb-1.5">{t('pricing_pro_period')}</p>
           </div>
-          <p className="text-sm text-gray-400 mb-6">Cancel anytime</p>
+          <p className="text-sm text-gray-400 mb-6">{t('pricing_pro_sub')}</p>
           <ul className="space-y-3 flex-1 mb-7">
             {[
-              'Unlimited analyses',
-              'Everything in Free',
-              'Revenue protected tracker',
-              'Full analysis history',
-              'Priority AI processing',
+              t('pricing_pro_f1'),
+              t('pricing_pro_f2'),
+              t('pricing_pro_f3'),
+              t('pricing_pro_f4'),
+              t('pricing_pro_f5'),
             ].map(f => (
               <li key={f} className="flex items-start gap-2.5 text-sm text-gray-700 font-medium">
                 <span className="text-brand-500 mt-0.5">✓</span> {f}
@@ -523,10 +512,10 @@ function Pricing() {
             ))}
           </ul>
           <Link to="/register" className="btn-primary w-full text-center text-sm py-2.5 shadow-md shadow-brand-500/20">
-            Start with Pro
+            {t('pricing_pro_cta')}
           </Link>
           <p className="text-xs text-center text-gray-400 mt-3">
-            Pays for itself after one blocked request
+            {t('pricing_pro_note')}
           </p>
         </div>
       </div>
@@ -536,37 +525,23 @@ function Pricing() {
 
 /* ─── Privacy Section ──────────────────────────────────────────────────── */
 function PrivacySection() {
+  const { t } = useTranslation();
+
   const items = [
-    {
-      icon: '📄',
-      title: 'Text extraction only',
-      body: 'We extract text from your PDF to run the AI analysis. The original file is deleted from our servers immediately after parsing.',
-    },
-    {
-      icon: '🚫',
-      title: 'Never sold or shared',
-      body: 'Your contract text and analysis history are private to your account. We never sell, share, or use your data to train AI models.',
-    },
-    {
-      icon: '🔐',
-      title: 'Encrypted at rest',
-      body: 'Contract text is encrypted with AES-256 before being written to the database. Even a database leak exposes no readable contract content.',
-    },
-    {
-      icon: '🗑️',
-      title: 'Delete anytime',
-      body: 'You own your data. Delete any contract from your dashboard at any time and it is permanently removed from our database.',
-    },
+    { icon: '📄', title: t('privacy_item1_title'), body: t('privacy_item1_body') },
+    { icon: '🚫', title: t('privacy_item2_title'), body: t('privacy_item2_body') },
+    { icon: '🔐', title: t('privacy_item3_title'), body: t('privacy_item3_body') },
+    { icon: '🗑️', title: t('privacy_item4_title'), body: t('privacy_item4_body') },
   ];
 
   return (
     <section className="bg-gray-50 border-y border-gray-100 py-20">
       <div className="max-w-5xl mx-auto px-6">
         <div className="text-center mb-12">
-          <p className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-3">Privacy</p>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900">Your contracts stay yours</h2>
+          <p className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-3">{t('privacy_label')}</p>
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900">{t('privacy_headline')}</h2>
           <p className="text-gray-500 mt-3 max-w-xl mx-auto">
-            You're uploading sensitive legal documents. Here's exactly how we handle them.
+            {t('privacy_sub')}
           </p>
         </div>
 
@@ -581,7 +556,9 @@ function PrivacySection() {
         </div>
 
         <p className="text-center text-xs text-gray-400 mt-8">
-          Read our full <Link to="/privacy" className="underline hover:text-gray-600">Privacy Policy</Link> for details.
+          {t('privacy_read_full')}{' '}
+          <Link to="/privacy" className="underline hover:text-gray-600">{t('privacy_policy_link')}</Link>{' '}
+          {t('privacy_for_details')}
         </p>
       </div>
     </section>
@@ -590,26 +567,26 @@ function PrivacySection() {
 
 /* ─── Final CTA ────────────────────────────────────────────────────────── */
 function FinalCTA() {
+  const { t } = useTranslation();
   return (
     <section className="bg-gray-950 py-20">
       <div className="max-w-2xl mx-auto px-6 text-center">
         <p className="text-4xl mb-6">🛡️</p>
         <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-4 leading-tight">
-          Your contract has the answer.
+          {t('final_cta_headline_1')}
           <br />
-          <span className="text-brand-400">Let AI find it.</span>
+          <span className="text-brand-400">{t('final_cta_headline_2')}</span>
         </h2>
         <p className="text-gray-400 mb-8 text-lg">
-          Stop second-guessing yourself. Stop doing free work.
-          Your contract is already protecting you — ScopeGuard just enforces it.
+          {t('final_cta_sub')}
         </p>
         <Link
           to="/register"
           className="inline-block bg-brand-500 hover:bg-brand-600 text-white font-semibold px-10 py-4 rounded-xl text-base shadow-xl shadow-brand-500/30 transition-all hover:shadow-brand-500/50 hover:-translate-y-0.5"
         >
-          Try Free — No Credit Card Required
+          {t('final_cta_btn')}
         </Link>
-        <p className="text-gray-600 text-sm mt-4">5 free analyses · Setup in 2 minutes · Cancel anytime</p>
+        <p className="text-gray-600 text-sm mt-4">{t('final_cta_note')}</p>
       </div>
     </section>
   );
@@ -617,6 +594,7 @@ function FinalCTA() {
 
 /* ─── Footer ───────────────────────────────────────────────────────────── */
 function Footer() {
+  const { t } = useTranslation();
   return (
     <footer className="bg-gray-950 border-t border-gray-800 py-8">
       <div className="max-w-5xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -624,16 +602,16 @@ function Footer() {
           <span>🛡️</span>
           <span className="font-semibold text-gray-300">ScopeGuard</span>
           <span className="text-gray-700">·</span>
-          <span className="text-sm">AI scope creep protection for freelancers</span>
+          <span className="text-sm">{t('footer_tagline')}</span>
         </div>
         <div className="flex flex-wrap items-center gap-5 text-sm text-gray-600">
-          <Link to="/login" className="hover:text-gray-400 transition-colors">Sign in</Link>
-          <Link to="/register" className="hover:text-gray-400 transition-colors">Register</Link>
-          <Link to="/blog" className="hover:text-gray-400 transition-colors">Blog</Link>
+          <Link to="/login" className="hover:text-gray-400 transition-colors">{t('footer_signin')}</Link>
+          <Link to="/register" className="hover:text-gray-400 transition-colors">{t('footer_register')}</Link>
+          <Link to="/blog" className="hover:text-gray-400 transition-colors">{t('footer_blog')}</Link>
           <span className="text-gray-800">·</span>
-          <Link to="/terms" className="hover:text-gray-400 transition-colors">Terms</Link>
-          <Link to="/privacy" className="hover:text-gray-400 transition-colors">Privacy</Link>
-          <Link to="/refund" className="hover:text-gray-400 transition-colors">Refunds</Link>
+          <Link to="/terms" className="hover:text-gray-400 transition-colors">{t('footer_terms')}</Link>
+          <Link to="/privacy" className="hover:text-gray-400 transition-colors">{t('footer_privacy')}</Link>
+          <Link to="/refund" className="hover:text-gray-400 transition-colors">{t('footer_refunds')}</Link>
           <span className="text-gray-800">·</span>
           <span>© {new Date().getFullYear()} ScopeGuard</span>
         </div>

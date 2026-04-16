@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useTranslation } from 'react-i18next';
+import LanguageSwitcher from '../components/LanguageSwitcher';
 
 export default function Login() {
   const { login } = useAuth();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [form, setForm] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
@@ -31,15 +34,18 @@ export default function Login() {
             <span className="text-4xl">🛡️</span>
             <h1 className="text-2xl font-bold text-gray-900 mt-2">ScopeGuard</h1>
           </Link>
-          <p className="text-gray-500 text-sm mt-1">AI-powered scope creep protection</p>
+          <p className="text-gray-500 text-sm mt-1">{t('login_subtitle')}</p>
+          <div className="mt-3">
+            <LanguageSwitcher light />
+          </div>
         </div>
 
         <div className="card p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-5">Sign in to your account</h2>
+          <h2 className="text-lg font-semibold text-gray-900 mb-5">{t('login_heading')}</h2>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="label">Email</label>
+              <label className="label">{t('login_email')}</label>
               <input
                 type="email"
                 className="input"
@@ -51,7 +57,7 @@ export default function Login() {
               />
             </div>
             <div>
-              <label className="label">Password</label>
+              <label className="label">{t('login_password')}</label>
               <input
                 type="password"
                 className="input"
@@ -69,20 +75,20 @@ export default function Login() {
             )}
 
             <button type="submit" className="btn-primary w-full" disabled={loading}>
-              {loading ? 'Signing in…' : 'Sign in'}
+              {loading ? t('login_submitting') : t('login_submit')}
             </button>
           </form>
         </div>
 
         <p className="text-center text-sm text-gray-500 mt-4">
-          No account?{' '}
+          {t('login_no_account')}{' '}
           <Link to="/register" className="text-brand-600 hover:underline font-medium">
-            Create one free
+            {t('login_create_free')}
           </Link>
         </p>
         <p className="text-center text-sm text-gray-400 mt-2">
           <Link to="/forgot-password" className="hover:text-gray-600 hover:underline">
-            Forgot password?
+            {t('login_forgot')}
           </Link>
         </p>
       </div>

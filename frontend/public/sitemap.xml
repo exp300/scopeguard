@@ -1,16 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
 
   <!-- Main pages -->
   <url>
     <loc>https://thescopeguard.com/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://thescopeguard.com/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://thescopeguard.com/es"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://thescopeguard.com/pt"/>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://thescopeguard.com/es</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://thescopeguard.com/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://thescopeguard.com/es"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://thescopeguard.com/pt"/>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://thescopeguard.com/pt</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://thescopeguard.com/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://thescopeguard.com/es"/>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://thescopeguard.com/pt"/>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
   <url>
     <loc>https://thescopeguard.com/blog</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://thescopeguard.com/es/blog</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thescopeguard.com/pt/blog</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://thescopeguard.com/register</loc>
@@ -38,7 +68,7 @@
     <priority>0.3</priority>
   </url>
 
-  <!-- Blog posts -->
+  <!-- English blog posts -->
   <url>
     <loc>https://thescopeguard.com/blog/how-to-handle-scope-creep-as-a-freelancer</loc>
     <changefreq>monthly</changefreq>
@@ -96,6 +126,130 @@
   </url>
   <url>
     <loc>https://thescopeguard.com/blog/client-communication-scope-boundaries</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Spanish blog posts -->
+  <url>
+    <loc>https://thescopeguard.com/es/blog/como-manejar-el-scope-creep-como-freelancer</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thescopeguard.com/es/blog/que-decir-cuando-cliente-pide-trabajo-extra</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thescopeguard.com/es/blog/ejemplos-de-clausulas-de-exclusiones-en-contratos-freelance</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thescopeguard.com/es/blog/el-scope-creep-esta-costando-dinero-a-los-freelancers</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thescopeguard.com/es/blog/como-rechazar-solicitudes-de-clientes-profesionalmente</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thescopeguard.com/es/blog/rastreando-horas-gratis-que-doy-a-clientes</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thescopeguard.com/es/blog/palabras-exactas-fuera-de-alcance</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thescopeguard.com/es/blog/el-costo-de-decir-si-a-solicitudes-pequenas</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thescopeguard.com/es/blog/señales-de-alerta-de-scope-creep-que-los-freelancers-ignoran</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thescopeguard.com/es/blog/como-escribir-una-orden-de-cambio-freelance</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thescopeguard.com/es/blog/scope-creep-en-proyectos-de-desarrollo-web</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thescopeguard.com/es/blog/comunicacion-con-cliente-sobre-limites-de-alcance</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Portuguese blog posts -->
+  <url>
+    <loc>https://thescopeguard.com/pt/blog/como-lidar-com-scope-creep-como-freelancer</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thescopeguard.com/pt/blog/o-que-dizer-quando-cliente-pede-trabalho-extra</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thescopeguard.com/pt/blog/exemplos-de-clausulas-de-exclusoes-em-contratos-freelance</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thescopeguard.com/pt/blog/scope-creep-esta-custando-dinheiro-aos-freelancers</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thescopeguard.com/pt/blog/como-recusar-solicitacoes-de-clientes-profissionalmente</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thescopeguard.com/pt/blog/rastreando-horas-gratuitas-que-dei-a-clientes</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thescopeguard.com/pt/blog/palavras-exatas-fora-do-escopo</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thescopeguard.com/pt/blog/o-custo-de-dizer-sim-a-solicitacoes-pequenas</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thescopeguard.com/pt/blog/sinais-de-alerta-de-scope-creep-que-freelancers-ignoram</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thescopeguard.com/pt/blog/como-escrever-uma-ordem-de-mudanca-freelance</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thescopeguard.com/pt/blog/scope-creep-em-projetos-de-desenvolvimento-web</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thescopeguard.com/pt/blog/comunicacao-com-cliente-sobre-limites-de-escopo</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>

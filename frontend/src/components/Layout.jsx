@@ -1,18 +1,21 @@
 import React, { useState } from 'react';
 import { Outlet, NavLink, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-
-const NAV = [
-  { to: '/dashboard', label: 'Dashboard', icon: GridIcon },
-  { to: '/analyze',   label: 'Analyze',   icon: ZapIcon },
-  { to: '/history',   label: 'History',   icon: ClockIcon },
-  { to: '/billing',   label: 'Billing',   icon: CreditCardIcon },
-];
+import { useTranslation } from 'react-i18next';
+import LanguageSwitcher from './LanguageSwitcher';
 
 export default function Layout() {
   const { user, logout } = useAuth();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  const NAV = [
+    { to: '/dashboard', label: t('nav_dashboard'), icon: GridIcon },
+    { to: '/analyze',   label: t('nav_analyze'),   icon: ZapIcon },
+    { to: '/history',   label: t('nav_history'),   icon: ClockIcon },
+    { to: '/billing',   label: t('nav_billing'),   icon: CreditCardIcon },
+  ];
 
   function handleLogout() {
     logout();
@@ -35,7 +38,7 @@ export default function Layout() {
               <span className="text-2xl">🛡️</span>
               <span className="font-bold text-lg text-gray-900">ScopeGuard</span>
             </div>
-            <p className="text-xs text-gray-400 mt-0.5">AI Scope Creep Detector</p>
+            <p className="text-xs text-gray-400 mt-0.5">{t('nav_subtitle')}</p>
           </Link>
         </div>
 
@@ -83,8 +86,11 @@ export default function Layout() {
               onClick={handleLogout}
               className="text-xs text-gray-400 hover:text-gray-600 transition-colors"
             >
-              Sign out
+              {t('nav_sign_out')}
             </button>
+          </div>
+          <div className="mt-3 pt-3 border-t border-gray-100">
+            <LanguageSwitcher light />
           </div>
         </div>
       </aside>
