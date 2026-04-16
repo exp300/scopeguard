@@ -1,21 +1,59 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link, useParams, Navigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { blogPosts } from '../data/blogPosts';
+
+function BlogLangBar() {
+  const LANGS = [
+    { code: 'en', label: 'EN', path: '/blog' },
+    { code: 'es', label: 'ES', path: '/es/blog' },
+    { code: 'pt', label: 'PT', path: '/pt/blog' },
+  ];
+  return (
+    <div className="flex items-center gap-1 text-xs font-semibold">
+      {LANGS.map((l, idx) => (
+        <React.Fragment key={l.code}>
+          {idx > 0 && <span className="text-gray-300">|</span>}
+          <Link
+            to={l.path}
+            className={`px-0.5 transition-colors ${
+              l.code === 'en'
+                ? 'text-gray-900'
+                : 'text-gray-400 hover:text-gray-700'
+            }`}
+          >
+            {l.label}
+          </Link>
+        </React.Fragment>
+      ))}
+    </div>
+  );
+}
 
 export default function BlogPost() {
   const { slug } = useParams();
+  const { i18n } = useTranslation();
   const post = blogPosts.find(p => p.slug === slug);
+
+  useEffect(() => {
+    if (i18n.language !== 'en') {
+      i18n.changeLanguage('en');
+      localStorage.setItem('sg_lang', 'en');
+    }
+  }, [i18n]);
 
   if (!post) return <Navigate to="/blog" replace />;
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Meta description via useEffect would need react-helmet; for now it's in the HTML */}
       <div className="max-w-3xl mx-auto px-6 py-12">
         <div className="mb-8">
-          <Link to="/blog" className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700 mb-6">
-            <span>←</span> All articles
-          </Link>
+          <div className="flex items-center justify-between mb-6">
+            <Link to="/blog" className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700">
+              <span>←</span> All articles
+            </Link>
+            <BlogLangBar />
+          </div>
           <div className="flex items-center gap-3 text-xs text-gray-400 mb-3">
             <span>{post.date}</span>
             <span>·</span>

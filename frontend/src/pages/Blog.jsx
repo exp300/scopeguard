@@ -1,15 +1,56 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { blogPosts } from '../data/blogPosts';
 
+function BlogLangBar() {
+  const LANGS = [
+    { code: 'en', label: 'EN', path: '/blog' },
+    { code: 'es', label: 'ES', path: '/es/blog' },
+    { code: 'pt', label: 'PT', path: '/pt/blog' },
+  ];
+  return (
+    <div className="flex items-center gap-1 text-xs font-semibold">
+      {LANGS.map((l, idx) => (
+        <React.Fragment key={l.code}>
+          {idx > 0 && <span className="text-gray-300">|</span>}
+          <Link
+            to={l.path}
+            className={`px-0.5 transition-colors ${
+              l.code === 'en'
+                ? 'text-gray-900'
+                : 'text-gray-400 hover:text-gray-700'
+            }`}
+          >
+            {l.label}
+          </Link>
+        </React.Fragment>
+      ))}
+    </div>
+  );
+}
+
 export default function Blog() {
+  const { i18n } = useTranslation();
+
+  // Sync language to EN when visiting the English blog
+  useEffect(() => {
+    if (i18n.language !== 'en') {
+      i18n.changeLanguage('en');
+      localStorage.setItem('sg_lang', 'en');
+    }
+  }, [i18n]);
+
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-3xl mx-auto px-6 py-12">
         <div className="mb-10">
-          <Link to="/" className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700 mb-6">
-            <span>←</span> Back to ScopeGuard
-          </Link>
+          <div className="flex items-center justify-between mb-6">
+            <Link to="/" className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700">
+              <span>←</span> Back to ScopeGuard
+            </Link>
+            <BlogLangBar />
+          </div>
           <h1 className="text-3xl font-bold text-gray-900">ScopeGuard Blog</h1>
           <p className="text-gray-500 mt-2">Practical guides for freelancers on scope creep, contracts, and getting paid fairly.</p>
         </div>

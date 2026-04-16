@@ -1,9 +1,26 @@
-import React from 'react';
-import { Link, useParams, Navigate, useLocation } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Link, useParams, Navigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { blogPostsEs } from '../data/blogPostsEs';
 import { blogPostsPt } from '../data/blogPostsPt';
 
 const LANG_CONFIG = {
+  en: {
+    posts: null, // handled by Blog.jsx / BlogPost.jsx
+    basePath: '/blog',
+    backToHome: '← Back to ScopeGuard',
+    blogTitle: 'ScopeGuard Blog',
+    blogSub: 'Practical guides for freelancers on scope creep, contracts, and getting paid fairly.',
+    readArticle: 'Read article →',
+    ctaTitle: 'Stop guessing what\'s in scope',
+    ctaSub: 'Upload your contract and get an instant AI verdict on any client request.',
+    ctaBtn: 'Try ScopeGuard free →',
+    backToBlog: '← All articles',
+    isClientInScope: 'Is that client request in scope?',
+    ctaBody: 'Upload your contract to ScopeGuard and get an AI verdict in seconds — with the exact clause cited and a reply you can send immediately.',
+    moreArticles: 'More articles',
+    label: 'EN',
+  },
   es: {
     posts: blogPostsEs,
     basePath: '/es/blog',
@@ -18,6 +35,7 @@ const LANG_CONFIG = {
     isClientInScope: '¿La solicitud de ese cliente está en el alcance?',
     ctaBody: 'Sube tu contrato a ScopeGuard y obtén un veredicto de IA en segundos — con la cláusula exacta citada y una respuesta lista para enviar.',
     moreArticles: 'Más artículos',
+    label: 'ES',
   },
   pt: {
     posts: blogPostsPt,
@@ -33,20 +51,58 @@ const LANG_CONFIG = {
     isClientInScope: 'Essa solicitação do cliente está no escopo?',
     ctaBody: 'Envie seu contrato ao ScopeGuard e obtenha um veredicto de IA em segundos — com a cláusula exata citada e uma resposta pronta para enviar.',
     moreArticles: 'Mais artigos',
+    label: 'PT',
   },
 };
 
+/* ─── Language bar shared across all blog pages ─────────────────────────── */
+function BlogLangBar({ currentLang }) {
+  return (
+    <div className="flex items-center gap-1 text-xs font-semibold">
+      {Object.entries(LANG_CONFIG).map(([code, cfg], idx) => (
+        <React.Fragment key={code}>
+          {idx > 0 && <span className="text-gray-300">|</span>}
+          <Link
+            to={cfg.basePath}
+            className={`px-0.5 transition-colors ${
+              currentLang === code
+                ? 'text-gray-900'
+                : 'text-gray-400 hover:text-gray-700'
+            }`}
+          >
+            {cfg.label}
+          </Link>
+        </React.Fragment>
+      ))}
+    </div>
+  );
+}
+
+/* ─── Blog list for a given language ────────────────────────────────────── */
 export function BlogLangList({ lang }) {
   const cfg = LANG_CONFIG[lang];
-  if (!cfg) return <Navigate to="/blog" replace />;
+  const { i18n } = useTranslation();
+
+  // Sync i18next language so UI chrome (nav, etc.) matches the blog language
+  useEffect(() => {
+    if (i18n.language !== lang) {
+      i18n.changeLanguage(lang);
+      localStorage.setItem('sg_lang', lang);
+    }
+  }, [lang, i18n]);
+
+  if (!cfg || !cfg.posts) return <Navigate to="/blog" replace />;
 
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-3xl mx-auto px-6 py-12">
         <div className="mb-10">
-          <Link to="/" className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700 mb-6">
-            {cfg.backToHome}
-          </Link>
+          <div className="flex items-center justify-between mb-6">
+            <Link to="/" className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700">
+              {cfg.backToHome}
+            </Link>
+            <BlogLangBar currentLang={lang} />
+          </div>
           <h1 className="text-3xl font-bold text-gray-900">{cfg.blogTitle}</h1>
           <p className="text-gray-500 mt-2">{cfg.blogSub}</p>
         </div>
@@ -84,10 +140,20 @@ export function BlogLangList({ lang }) {
   );
 }
 
+/* ─── Blog post for a given language ────────────────────────────────────── */
 export function BlogLangPost({ lang }) {
   const { slug } = useParams();
   const cfg = LANG_CONFIG[lang];
-  if (!cfg) return <Navigate to="/blog" replace />;
+  const { i18n } = useTranslation();
+
+  useEffect(() => {
+    if (i18n.language !== lang) {
+      i18n.changeLanguage(lang);
+      localStorage.setItem('sg_lang', lang);
+    }
+  }, [lang, i18n]);
+
+  if (!cfg || !cfg.posts) return <Navigate to="/blog" replace />;
 
   const post = cfg.posts.find(p => p.slug === slug);
   if (!post) return <Navigate to={cfg.basePath} replace />;
@@ -96,9 +162,12 @@ export function BlogLangPost({ lang }) {
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-3xl mx-auto px-6 py-12">
         <div className="mb-8">
-          <Link to={cfg.basePath} className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700 mb-6">
-            {cfg.backToBlog}
-          </Link>
+          <div className="flex items-center justify-between mb-6">
+            <Link to={cfg.basePath} className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700">
+              {cfg.backToBlog}
+            </Link>
+            <BlogLangBar currentLang={lang} />
+          </div>
           <div className="flex items-center gap-3 text-xs text-gray-400 mb-3">
             <span>{post.date}</span>
             <span>·</span>
