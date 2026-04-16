@@ -12,13 +12,12 @@ export default function Billing() {
   const [portalLoading, setPortalLoading] = useState(false);
   const [error, setError] = useState('');
 
-  // Handle Stripe redirect back
   const successParam = searchParams.get('success');
   const canceledParam = searchParams.get('canceled');
 
   useEffect(() => {
     if (successParam) {
-      // Refresh user to pick up new plan from webhook
+      // Poll until the webhook has upgraded the user's plan
       const poll = setInterval(async () => {
         await refreshUser();
         if (user?.plan === 'pro') clearInterval(poll);
@@ -153,7 +152,7 @@ export default function Billing() {
             'Everything in Free',
             'Unlimited contracts',
             'Revenue protected tracking',
-            'Priority Claude AI',
+            'Priority AI',
           ]}
           active={isPro}
           highlight
@@ -164,7 +163,7 @@ export default function Billing() {
                 disabled={loading}
                 className="btn-primary w-full mt-4"
               >
-                {loading ? 'Redirecting to Stripe…' : 'Upgrade to Pro'}
+                {loading ? 'Redirecting to checkout…' : 'Upgrade to Pro'}
               </button>
             )
           }
@@ -176,7 +175,7 @@ export default function Billing() {
         <div className="card p-5">
           <h2 className="font-semibold text-gray-900 mb-2">Manage Subscription</h2>
           <p className="text-sm text-gray-500 mb-4">
-            Update payment method, view invoices, or cancel — all through the Stripe customer portal.
+            Cancel or update your payment method through the Paddle customer portal.
           </p>
           <button
             onClick={handleManage}
@@ -236,8 +235,9 @@ export default function Billing() {
           {[
             ['Do unused analyses carry over?', 'Free tier analyses do not carry over. Pro plan has unlimited analyses, so there\'s nothing to carry over.'],
             ['Can I cancel anytime?', 'Yes. Cancel through the billing portal and you\'ll keep Pro until the end of the billing period.'],
-            ['What payment methods are accepted?', 'All major credit and debit cards via Stripe. No PayPal at this time.'],
+            ['What payment methods are accepted?', 'All major credit and debit cards. Paddle also supports PayPal, Apple Pay, and Google Pay depending on your region.'],
             ['Is my contract data safe?', 'Contract text is stored encrypted in our database and used only for your analyses. We never share or train on your data.'],
+            ['Who handles billing?', 'Payments are processed by Paddle, our Merchant of Record. Paddle handles all tax compliance and payment processing.'],
           ].map(([q, a]) => (
             <div key={q}>
               <dt className="text-sm font-medium text-gray-800">{q}</dt>

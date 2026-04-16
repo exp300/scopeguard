@@ -37,6 +37,11 @@ CREATE TABLE IF NOT EXISTS analyses (
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
+-- Paddle billing columns (added after initial schema)
+ALTER TABLE users ADD COLUMN IF NOT EXISTS paddle_customer_id TEXT;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS paddle_subscription_id TEXT;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS paddle_cancel_url TEXT;
+
 CREATE TABLE IF NOT EXISTS promo_redemptions (
   id SERIAL PRIMARY KEY,
   user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,

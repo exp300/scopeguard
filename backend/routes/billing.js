@@ -1,29 +1,34 @@
 const express = require('express');
-const Stripe = require('stripe');
+const { Paddle, Environment } = require('@paddle/paddle-node-sdk');
 const { query } = require('../db/database');
 const authMiddleware = require('../middleware/auth');
 
 const router = express.Router();
 
-const stripe = process.env.STRIPE_SECRET_KEY
-  ? new Stripe(process.env.STRIPE_SECRET_KEY)
+const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
+
+const paddle = process.env.PADDLE_API_KEY
+  ? new Paddle(process.env.PADDLE_API_KEY, {
+      environment: process.env.NODE_ENV === 'production'
+        ? Environment.production
+        : Environment.sandbox,
+    })
   : null;
 
-function requireStripe(res) {
-  if (!stripe) {
+function requirePaddle(res) {
+  if (!paddle) {
     res.status(503).json({
       error: 'Billing is not configured on this server.',
-      code: 'STRIPE_NOT_CONFIGURED',
+      code: 'PADDLE_NOT_CONFIGURED',
     });
     return null;
   }
-  return stripe;
+  return paddle;
 }
 
 // POST /api/billing/checkout
 router.post('/checkout', authMiddleware, async (req, res) => {
-  const stripe = requireStripe(res);
-  if (!stripe) return;
+  if (!requirePaddle(res)) return;
 
   try {
     const { rows } = await query('SELECT * FROM users WHERE id = $1', [req.userId]);
@@ -33,121 +38,161 @@ router.post('/checkout', authMiddleware, async (req, res) => {
       return res.status(400).json({ error: 'You are already on the Pro plan' });
     }
 
-    let customerId = user.stripe_customer_id;
-    if (!customerId) {
-      const customer = await stripe.customers.create({
-        email: user.email,
-        name: user.name,
-        metadata: { userId: String(user.id) },
-      });
-      customerId = customer.id;
-      await query(
-        'UPDATE users SET stripe_customer_id = $1 WHERE id = $2',
-        [customerId, req.userId]
-      );
-    }
-
-    const session = await stripe.checkout.sessions.create({
-      customer: customerId,
-      mode: 'subscription',
-      line_items: [{ price: process.env.STRIPE_PRO_PRICE_ID, quantity: 1 }],
-      success_url: `${process.env.FRONTEND_URL || 'http://localhost:5173'}/billing?success=1`,
-      cancel_url: `${process.env.FRONTEND_URL || 'http://localhost:5173'}/billing?canceled=1`,
-      metadata: { userId: String(req.userId) },
+    const transaction = await paddle.transactions.create({
+      items: [{ priceId: process.env.PADDLE_PRO_PRICE_ID, quantity: 1 }],
+      customData: { userId: String(req.userId) },
+      ...(user.paddle_customer_id ? { customerId: user.paddle_customer_id } : {}),
+      checkoutSettings: {
+        successUrl: `${FRONTEND_URL}/billing?success=1`,
+      },
     });
 
-    res.json({ url: session.url });
+    const checkoutUrl = transaction.checkout?.url;
+    if (!checkoutUrl) {
+      console.error('[billing] No checkout URL in Paddle transaction:', transaction);
+      return res.status(500).json({ error: 'Failed to get checkout URL' });
+    }
+
+    res.json({ url: checkoutUrl });
   } catch (err) {
     console.error('[billing] checkout error:', err.message);
     res.status(500).json({ error: 'Failed to create checkout session' });
   }
 });
 
-// POST /api/billing/portal
+// POST /api/billing/portal — returns stored subscription management URL
 router.post('/portal', authMiddleware, async (req, res) => {
-  const stripe = requireStripe(res);
-  if (!stripe) return;
+  if (!requirePaddle(res)) return;
 
   try {
     const { rows } = await query(
-      'SELECT stripe_customer_id FROM users WHERE id = $1',
+      'SELECT paddle_cancel_url, paddle_subscription_id FROM users WHERE id = $1',
       [req.userId]
     );
     const user = rows[0];
 
-    if (!user.stripe_customer_id) {
-      return res.status(400).json({ error: 'No billing account found' });
+    if (!user.paddle_subscription_id) {
+      return res.status(400).json({ error: 'No active subscription found' });
     }
 
-    const session = await stripe.billingPortal.sessions.create({
-      customer: user.stripe_customer_id,
-      return_url: `${process.env.FRONTEND_URL || 'http://localhost:5173'}/billing`,
-    });
-
-    res.json({ url: session.url });
+    // Return the cancel URL stored from the subscription webhook,
+    // or fall back to Paddle's customer portal.
+    const url = user.paddle_cancel_url || 'https://customer.paddle.com/';
+    res.json({ url });
   } catch (err) {
     console.error('[billing] portal error:', err.message);
-    res.status(500).json({ error: 'Failed to open billing portal' });
+    res.status(500).json({ error: 'Failed to get portal URL' });
   }
 });
 
 // POST /api/billing/webhook
-router.post('/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
-  const stripe = requireStripe(res);
-  if (!stripe) return;
+router.post(
+  '/webhook',
+  express.raw({ type: 'application/json' }),
+  async (req, res) => {
+    if (!requirePaddle(res)) return;
 
-  const sig = req.headers['stripe-signature'];
-  let event;
-  try {
-    event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
-  } catch (err) {
-    console.error('Webhook signature error:', err.message);
-    return res.status(400).send(`Webhook Error: ${err.message}`);
-  }
-
-  try {
-    switch (event.type) {
-      case 'checkout.session.completed': {
-        const session = event.data.object;
-        const userId = session.metadata?.userId;
-        if (userId && session.subscription) {
-          await query(
-            'UPDATE users SET plan = $1, stripe_subscription_id = $2 WHERE id = $3',
-            ['pro', session.subscription, parseInt(userId)]
-          );
-          console.log(`User ${userId} upgraded to pro`);
-        }
-        break;
-      }
-      case 'customer.subscription.deleted': {
-        const sub = event.data.object;
-        await query(
-          'UPDATE users SET plan = $1, stripe_subscription_id = NULL WHERE stripe_subscription_id = $2',
-          ['free', sub.id]
-        );
-        console.log(`Subscription ${sub.id} cancelled — user downgraded to free`);
-        break;
-      }
-      case 'invoice.payment_failed': {
-        console.warn(`Payment failed for subscription: ${event.data.object.subscription}`);
-        break;
-      }
-      default:
-        break;
+    const signature = req.headers['paddle-signature'];
+    let event;
+    try {
+      event = paddle.webhooks.unmarshal(
+        req.body.toString(),
+        process.env.PADDLE_WEBHOOK_SECRET,
+        signature
+      );
+    } catch (err) {
+      console.error('[billing] Webhook signature error:', err.message);
+      return res.status(400).send(`Webhook Error: ${err.message}`);
     }
-  } catch (err) {
-    console.error('[billing] webhook DB error:', err.message);
-    // Still return 200 so Stripe doesn't retry — log and investigate separately
-  }
 
-  res.json({ received: true });
-});
+    try {
+      switch (event.eventType) {
+        // Payment completed — upgrade user to Pro
+        case 'transaction.completed': {
+          const txn = event.data;
+          const userId = txn.customData?.userId;
+          const customerId = txn.customerId;
+          const subscriptionId = txn.subscriptionId;
+
+          if (userId) {
+            await query(
+              `UPDATE users
+               SET plan = $1,
+                   paddle_customer_id = COALESCE(paddle_customer_id, $2),
+                   paddle_subscription_id = COALESCE($3, paddle_subscription_id)
+               WHERE id = $4`,
+              ['pro', customerId || null, subscriptionId || null, parseInt(userId)]
+            );
+            console.log(`[billing] User ${userId} upgraded to pro`);
+          }
+          break;
+        }
+
+        // Subscription activated — store management URLs
+        case 'subscription.activated': {
+          const sub = event.data;
+          const userId = sub.customData?.userId;
+          const cancelUrl = sub.managementUrls?.cancel || null;
+
+          if (userId) {
+            await query(
+              `UPDATE users
+               SET paddle_subscription_id = $1,
+                   paddle_customer_id = COALESCE(paddle_customer_id, $2),
+                   paddle_cancel_url = $3
+               WHERE id = $4`,
+              [sub.id, sub.customerId || null, cancelUrl, parseInt(userId)]
+            );
+            console.log(`[billing] Subscription activated for user ${userId}`);
+          }
+          break;
+        }
+
+        // Subscription updated — refresh management URLs
+        case 'subscription.updated': {
+          const sub = event.data;
+          const cancelUrl = sub.managementUrls?.cancel || null;
+          if (sub.id) {
+            await query(
+              'UPDATE users SET paddle_cancel_url = $1 WHERE paddle_subscription_id = $2',
+              [cancelUrl, sub.id]
+            );
+          }
+          break;
+        }
+
+        // Subscription canceled — downgrade to free
+        case 'subscription.canceled': {
+          const sub = event.data;
+          await query(
+            `UPDATE users
+             SET plan = 'free',
+                 paddle_subscription_id = NULL,
+                 paddle_cancel_url = NULL
+             WHERE paddle_subscription_id = $1`,
+            [sub.id]
+          );
+          console.log(`[billing] Subscription ${sub.id} cancelled — user downgraded to free`);
+          break;
+        }
+
+        default:
+          break;
+      }
+    } catch (err) {
+      console.error('[billing] webhook DB error:', err.message);
+      // Return 200 so Paddle doesn't retry — investigate separately
+    }
+
+    res.json({ received: true });
+  }
+);
 
 // POST /api/billing/redeem-promo
 const PROMO_CODES = {
   PRODUCTHUNT: {
     days: 30,
-    expiresAt: new Date('2026-05-12T23:59:59Z'), // code stops being accepted after this date
+    expiresAt: new Date('2026-05-12T23:59:59Z'),
   },
 };
 
@@ -172,7 +217,6 @@ router.post('/redeem-promo', authMiddleware, async (req, res) => {
       return res.status(400).json({ error: 'You already have a Pro plan' });
     }
 
-    // Check if already redeemed
     const { rows: existing } = await query(
       'SELECT id FROM promo_redemptions WHERE user_id = $1 AND code = $2',
       [req.userId, code.trim().toUpperCase()]
@@ -206,14 +250,14 @@ router.post('/redeem-promo', authMiddleware, async (req, res) => {
 router.get('/status', authMiddleware, async (req, res) => {
   try {
     const { rows } = await query(
-      'SELECT plan, stripe_customer_id, stripe_subscription_id, analyses_used FROM users WHERE id = $1',
+      'SELECT plan, paddle_customer_id, paddle_subscription_id, analyses_used FROM users WHERE id = $1',
       [req.userId]
     );
     const user = rows[0];
     res.json({
       plan: user.plan,
       analyses_used: user.analyses_used,
-      has_stripe_account: !!user.stripe_customer_id,
+      has_paddle_account: !!user.paddle_customer_id,
     });
   } catch (err) {
     console.error('[billing] status error:', err.message);
