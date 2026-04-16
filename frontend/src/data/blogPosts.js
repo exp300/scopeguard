@@ -452,4 +452,206 @@ export const blogPosts = [
 <p>Handled well, it doesn't damage relationships. For the clients worth keeping, it builds them.</p>
 `,
   },
+
+  {
+    slug: 'tracking-free-hours-clients',
+    title: 'I tracked every free hour I gave clients for a month. The number shocked me.',
+    metaDescription:
+      'I logged every unpaid minute I worked for clients over 30 days. The total was embarrassing. Here\'s what the data showed and what I changed after.',
+    date: 'April 12, 2026',
+    readingTime: '6 min read',
+    content: `
+<h1>I tracked every free hour I gave clients for a month. The number shocked me.</h1>
+
+<p>I had a suspicion I was giving away too much time. Not in an obvious way — no client was asking me to build entire features for free. It was the small stuff. A "quick question" on a Tuesday afternoon. A revision that wasn't in the original brief. A 20-minute call that was really just the client thinking out loud.</p>
+
+<p>So I ran an experiment. For one month, I logged everything: every task I completed, every message I responded to, every request I fulfilled. I marked each one as either billed or unbilled. At the end of the month, I added it up.</p>
+
+<p>Twenty-six hours. Unpaid. In one month.</p>
+
+<p>At my rate at the time, that was over $3,000 just gone. I had been telling myself I was running a tight operation.</p>
+
+<h2>what I was actually tracking</h2>
+
+<p>The unbilled hours didn't come from one place. They came from a dozen small places that I'd trained myself not to notice:</p>
+
+<p>Revision rounds that went past the two included in my contract. I averaged 3.4 rounds per project that month. I'd agreed to two. I just never said anything past round two.</p>
+
+<p>Clarification calls. Clients would message asking to "hop on a quick call." Those calls averaged 28 minutes. I scheduled two that month and logged neither as billable time.</p>
+
+<p>Scope additions I agreed to verbally. One client asked if I could "also handle the meta descriptions" while I was doing their page copy. I said sure. That was three hours I never invoiced for.</p>
+
+<p>The small stuff. Exporting files in a format they didn't ask for in the brief. Writing a summary email when I delivered work. Answering questions about things I'd already delivered.</p>
+
+<p>None of it individually felt worth flagging. Together, it was 26 hours.</p>
+
+<h2>you're probably not tracking it either</h2>
+
+<p>I found a post on r/freelance where someone did a similar accounting after one project. They'd quoted a landing page at $2,000 — 20 hours at their $100 rate. Then the requests started:</p>
+
+<blockquote>"Can you add a blog section? (+10 hours). Actually let's change the entire color scheme (+8 hours). One more revision on the copy (+5 hours). Final tally: 43 hours worked, $2,000 paid."</blockquote>
+
+<p>That's $2,300 in work they did for free on a single project. And their explanation for why they kept saying yes: they didn't want to lose the client or get a bad review.</p>
+
+<p>I recognized that feeling immediately. It's not cowardice exactly. It's the mental accounting freelancers do in the moment — the project is almost done, pushing back now feels risky, better to just finish it. What you don't account for is that the next client will also be "almost done" at some point. And the one after that.</p>
+
+<p>Another person in that thread put it well. They said they lose "at least a few hours every week to stuff that wasn't in the original brief." A few hours a week, at almost any freelance rate, is $5,000–$15,000 a year quietly disappearing.</p>
+
+<h2>what changed after I ran the numbers</h2>
+
+<p>I did three things that month after seeing my totals.</p>
+
+<p>First, I added a change order clause to every contract. Anything outside the documented scope requires a written change order before I start. Not a long one — sometimes it's literally one sentence — but it exists, it has a price, and the client approves it.</p>
+
+<p>Second, I started logging time even when I wasn't billing for it. Just knowing that a "quick question" took 35 minutes made me less likely to answer the next one for free.</p>
+
+<p>Third, I stopped treating the contract as a document I write once and forget. When a client asks for something, I check it first. Literally open it. Half the time the answer is obvious, but checking means I'm not making decisions based on vague memory of what we agreed to.</p>
+
+<h2>the part I hadn't expected</h2>
+
+<p>When I started enforcing scope more consistently, I expected pushback. Some friction. Maybe a lost client.</p>
+
+<p>What actually happened: most clients adjusted quickly. A few thanked me for being clear about what was included. One said it made her feel more confident the project wouldn't balloon out of control on her end either.</p>
+
+<p>The clients who pushed back hard — two of them — were not clients I wanted to keep. Which was useful information.</p>
+
+<p>If you haven't tracked your unbilled hours for a month, I'd do it. The number is probably higher than you think. And once you see it, it's hard to unsee.</p>
+
+<p>I use <a href="https://thescopeguard.com">ScopeGuard</a> now to check whether requests fall inside or outside the contract before I respond. It's made that "check the contract first" habit much faster — paste the message, get an answer, decide. Takes about 30 seconds instead of re-reading the whole agreement.</p>
+`,
+  },
+
+  {
+    slug: 'exact-words-out-of-scope',
+    title: 'The exact words I use when a client asks for something outside the contract',
+    metaDescription:
+      'Four scripts I\'ve actually sent when a client asked for work outside our agreement. No drama, no lost relationships — just clear, professional redirects that work.',
+    date: 'April 13, 2026',
+    readingTime: '5 min read',
+    content: `
+<h1>The exact words I use when a client asks for something outside the contract</h1>
+
+<p>For a long time I handled out-of-scope requests by improvising. The client would ask for something, I'd feel the familiar low-level anxiety, and I'd type something that was either too apologetic or too blunt. Then I'd spend ten minutes editing it until it felt neutral enough to send.</p>
+
+<p>This is exhausting. It also means you're making it up every time, which means you're inconsistent, which means clients can't predict how you'll respond, which makes the whole thing worse.</p>
+
+<p>I started keeping templates a couple of years ago. Not scripts I read out robotically — more like structures I come back to. Here's what actually works.</p>
+
+<h2>when it's clearly outside the scope</h2>
+
+<p>The most common situation: client asks for something that's unambiguously not in the contract. A logo project where they now want a full brand guide. A website build where they want ongoing SEO.</p>
+
+<p>What I send:</p>
+
+<p><em>"Love this idea — it's outside what we scoped originally, so I'd treat it as an addition. Let me put together a quick quote and send it over in the next day or two so we can keep things moving."</em></p>
+
+<p>That's the whole thing. I saw a version of this in r/graphic_design once and it's stuck with me. Someone with years of experience described their script almost identically: acknowledge the request warmly, name that it's outside scope, immediately offer a path forward. No "unfortunately" or "I'm afraid" or "per our contract." Just: here's where we are, here's what happens next.</p>
+
+<p>The key is the warm acknowledgment. "Love this idea" does real work. It means you're not treating the request as an attack. You're treating it as a request — just one that costs money.</p>
+
+<h2>when they're treating QA as a feature request session</h2>
+
+<p>This one comes up a lot in dev and design work. Project is almost done, you're in the review phase, and the client starts sending "while you're in there, could you also..." messages.</p>
+
+<p>What I send:</p>
+
+<p><em>"Happy to add that — I want to flag that we're in the QA phase now, so anything new goes into a separate pass to make sure it doesn't introduce issues into what we've already tested. I'll put it on a list and send a quote before we start. Sound good?"</em></p>
+
+<p>The framing here matters. You're not refusing. You're protecting them from bugs — which is true, and which they care about. One developer I talked to said he always uses this framing because "the bugs in the final product bit works every time." It shifts the conversation from "you're trying to charge me more" to "you're keeping my product stable."</p>
+
+<h2>when it's genuinely ambiguous</h2>
+
+<p>Sometimes the contract is unclear about whether something is included. Maybe it's a category you didn't anticipate when you wrote the scope. This is the one that trips people up, because there's no obvious right answer.</p>
+
+<p>What I do first: check the contract literally before responding. Not my memory of the contract — the actual document. More often than not, the answer is in there and I'd forgotten.</p>
+
+<p>If it really is ambiguous:</p>
+
+<p><em>"Let me check our agreement quickly — I want to make sure I give you an accurate answer on what's covered. I'll get back to you within the day."</em></p>
+
+<p>Then I actually read it. If it's included, I say so. If it's not, I quote it. If it's genuinely unclear, I say that too: <em>"This falls in a gray area in our current agreement — to keep it clean, I'd handle it as an add-on so there's no ambiguity."</em></p>
+
+<p>Clients respect this more than you'd think. You're being careful and fair, not stingy.</p>
+
+<h2>when they push back on being told it's out of scope</h2>
+
+<p>This happens. Usually it sounds like: "I thought this was included" or "you did something similar last time." The impulse is to explain at length why they're wrong. Don't do this.</p>
+
+<p>What I send:</p>
+
+<p><em>"I hear you — let me pull up the agreement and find the relevant section so we're both looking at the same thing. One moment."</em></p>
+
+<p>Then I quote the exact clause. Not paraphrase it, quote it. Most of the time this ends the conversation. Either they realize they were mistaken, or they realize the contract genuinely doesn't cover it and they accept the add-on.</p>
+
+<p>If they keep pushing after seeing the actual contract language, that's a different kind of problem and the contract is the least of your worries.</p>
+
+<h2>the thing that makes all of this easier</h2>
+
+<p>These templates only work if you actually know what's in your contract in the moment a request comes in. That's harder than it sounds when you're managing multiple clients and projects.</p>
+
+<p>I started using <a href="https://thescopeguard.com">ScopeGuard</a> for this — you upload your contract, paste the client's message, and it tells you whether it's in scope with the specific clause cited. It doesn't replace the templates above, but it gets me to the right template faster. When a client asks for something at 7pm on a Thursday and I'm tired and can't remember what we agreed to, having a tool that checks for me means I don't improvise when I shouldn't.</p>
+
+<p>The templates help. The contract helps more. Knowing which template to use without having to re-read the whole agreement every time is what actually makes this consistent.</p>
+`,
+  },
+
+  {
+    slug: 'cost-of-saying-yes-small-requests',
+    title: 'Why saying yes to small requests is costing you more than you think',
+    metaDescription:
+      'Every small yes trains the client to ask for more. Here\'s the math on what those small requests actually cost, and why the problem compounds over time.',
+    date: 'April 14, 2026',
+    readingTime: '7 min read',
+    content: `
+<h1>Why saying yes to small requests is costing you more than you think</h1>
+
+<p>There's a post from a senior developer on r/webdev that I keep thinking about. He's been coding for 15 years, spent eight of them freelancing, currently acting as a CTO. The post is titled "Why have we allowed Agile to turn into Unlimited Micro-Scope Creep?" and he describes the scenario almost everyone in freelance or agency work knows:</p>
+
+<blockquote>"You have a roadmap. You have a sprint. You have an architecture in mind. Then a client pings you on Slack: 'Hey, can we just move this button to the left and make it blue? It's super quick.' And because I'm a problem solver at heart, I say: Sure."</blockquote>
+
+<p>He calls it "the asymmetry of friction." The client's friction to ask is basically zero — it's one Slack message. Your friction to say no, or even to say "that'll take a few hours," is significant. There's relationship management, the risk of seeming difficult, the knowledge that it probably won't take that long. So you say yes. And then you say yes again.</p>
+
+<p>What he's describing is how scope creep actually starts. Not with a big unreasonable request, but with a reasonable one you agree to too quickly.</p>
+
+<h2>the math that changed how I think about this</h2>
+
+<p>I started doing this calculation after a particularly bad month. If you absorb two free hours per week — which is probably conservative for most active freelancers — that's about 100 unbilled hours a year. At $100/hour, that's $10,000. At $150, it's $15,000. This is money you earned but didn't get paid for.</p>
+
+<p>But the direct cost isn't even the whole story. Those hours came from somewhere. Either you worked longer than you should have, which erodes your quality of life. Or they displaced paid work — time you could have spent on another client, or on a project that would have moved your business forward. The opportunity cost is real, it's just invisible.</p>
+
+<p>There's also what I think of as the rate compression problem. If you quoted a project at $5,000 expecting 40 hours, and you actually spend 52 hours because of scope additions you absorbed, your effective rate just dropped from $125/hour to $96/hour. You didn't notice because the invoice number stayed the same. But your rate went down. That $96/hour is what you're actually worth to that client in practice — and clients have a way of sensing what they can get away with.</p>
+
+<h2>how one yes trains the next one</h2>
+
+<p>This is the part that took me longest to understand. Every time you absorb a small out-of-scope request without naming it, you're teaching the client something: that this is how the relationship works. You ask for things and they get done. No forms, no quotes, no friction.</p>
+
+<p>By the third or fourth request, they're not being manipulative. They genuinely believe that's just how you operate. And in a way they're right — you've been operating that way.</p>
+
+<p>The CTO from that Reddit post made this point directly: "It happens because it is allowed." Someone in the comments agreed. Not the PM, not the client, not the system. You.</p>
+
+<p>A freelance graphic designer posted something similar. She'd been doing logo work for a few years and had gotten so used to accommodating clients that she'd never actually enforced a round limit. She said she'd go through five, six, seven rounds of revisions on a project she'd quoted for two. Each one felt too small to flag. By the time she was on round six, raising it felt impossible — the expectation was already set.</p>
+
+<p>So she changed her process. Not the rate, not the contract language — just the behavior. Round two ends and she sends: "We've used both included revision rounds. Happy to keep going — I'll send a quote for additional rounds before we continue." The first few times she did this she was terrified. The clients mostly said fine.</p>
+
+<h2>the cost nobody talks about</h2>
+
+<p>The money is the obvious part. What gets less attention is what it does to the working relationship over time.</p>
+
+<p>When you say yes to small requests consistently, you attract a certain kind of client — one who's calibrated to a freelancer who says yes to small requests. Those clients are not your best clients. They tend to have more requests over time, not fewer. They refer you to other clients who behave the same way.</p>
+
+<p>Meanwhile, the clients who respect your time are the ones who appreciate when you're clear about what's included. They actually feel safer with a freelancer who maintains scope, because they know the project won't quietly expand on their end either. Clear scope protects both sides.</p>
+
+<p>I've had clients thank me for sending a change order. Not sarcastically — genuinely. One said it helped him get budget approval internally because now there was a paper trail. That never would have happened if I'd just absorbed the work and kept quiet about it.</p>
+
+<h2>what actually helps</h2>
+
+<p>The hard part isn't knowing what to do. Everyone reading this knows they should enforce scope. The hard part is doing it in the moment, when you're tired and the client is friendly and it seems like a small thing.</p>
+
+<p>Two things help me consistently. The first is having language ready ahead of time — a standard response for "this is outside our scope" that I don't have to think up each time. The second is checking the contract before I respond, not after. When I check first, I'm not operating on instinct. I know what we agreed to.</p>
+
+<p>I use <a href="https://thescopeguard.com">ScopeGuard</a> for the second part. Paste the client's message, paste the contract, get an answer. It tells me whether something is in scope with the clause cited. Takes 30 seconds and it means I stop making gut calls about what we agreed to six weeks ago. Gut calls are how you end up absorbing 26 hours in a month and not noticing until you add it all up.</p>
+
+<p>The first yes is the expensive one. Everything after that is just the interest.</p>
+`,
+  },
 ];
