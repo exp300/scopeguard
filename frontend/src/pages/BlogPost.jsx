@@ -1,34 +1,8 @@
 import React, { useEffect } from 'react';
 import { Link, useParams, Navigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import BlogLangBar from '../components/BlogLangBar';
 import { blogPosts } from '../data/blogPosts';
-
-function BlogLangBar() {
-  const LANGS = [
-    { code: 'en', label: 'EN', path: '/blog' },
-    { code: 'es', label: 'ES', path: '/es/blog' },
-    { code: 'pt', label: 'PT', path: '/pt/blog' },
-  ];
-  return (
-    <div className="flex items-center gap-1 text-xs font-semibold">
-      {LANGS.map((l, idx) => (
-        <React.Fragment key={l.code}>
-          {idx > 0 && <span className="text-gray-300">|</span>}
-          <Link
-            to={l.path}
-            className={`px-0.5 transition-colors ${
-              l.code === 'en'
-                ? 'text-gray-900'
-                : 'text-gray-400 hover:text-gray-700'
-            }`}
-          >
-            {l.label}
-          </Link>
-        </React.Fragment>
-      ))}
-    </div>
-  );
-}
 
 export default function BlogPost() {
   const { slug } = useParams();
@@ -52,7 +26,8 @@ export default function BlogPost() {
             <Link to="/blog" className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700">
               <span>←</span> All articles
             </Link>
-            <BlogLangBar />
+            {/* Pass slug so EN|ES|PT links keep user on the same article */}
+            <BlogLangBar currentLang="en" slug={slug} />
           </div>
           <div className="flex items-center gap-3 text-xs text-gray-400 mb-3">
             <span>{post.date}</span>
@@ -61,13 +36,11 @@ export default function BlogPost() {
           </div>
         </div>
 
-        {/* Article */}
         <article
           className="bg-white rounded-xl border border-gray-200 px-8 py-10 prose prose-gray prose-headings:font-semibold prose-h1:text-2xl prose-h2:text-xl prose-a:text-brand-600 prose-a:no-underline hover:prose-a:underline prose-ul:my-3 prose-li:my-0.5 prose-blockquote:border-brand-300 prose-blockquote:bg-brand-50 prose-blockquote:rounded-r-lg prose-blockquote:py-1 max-w-none"
           dangerouslySetInnerHTML={{ __html: post.content }}
         />
 
-        {/* CTA */}
         <div className="mt-10 bg-brand-50 border border-brand-100 rounded-xl px-8 py-6 text-center">
           <p className="text-sm font-semibold text-brand-900 mb-1">Is that client request in scope?</p>
           <p className="text-sm text-brand-700 mb-4">
@@ -81,7 +54,6 @@ export default function BlogPost() {
           </Link>
         </div>
 
-        {/* Related posts */}
         <div className="mt-10">
           <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-4">More articles</h3>
           <div className="space-y-3">

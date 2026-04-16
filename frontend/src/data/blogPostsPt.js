@@ -1,6 +1,6 @@
 export const blogPostsPt = [
   {
-    slug: 'como-lidar-com-scope-creep-como-freelancer',
+    slug: 'how-to-handle-scope-creep-as-a-freelancer',
     title: 'Como lidar com scope creep como freelancer (sem perder clientes)',
     metaDescription:
       'O scope creep está custando mais do que você pensa. Veja como identificá-lo cedo, responder sem drama e parar de trabalhar de graça — sem arruinar relacionamentos com clientes.',
@@ -60,7 +60,7 @@ export const blogPostsPt = [
 `,
   },
   {
-    slug: 'o-que-dizer-quando-cliente-pede-trabalho-extra',
+    slug: 'what-to-say-when-client-asks-for-extra-work',
     title: 'O que dizer quando um cliente pede algo fora do contrato',
     metaDescription:
       'Scripts exatos e estratégias para responder a solicitações fora do escopo de forma profissional — sem perder o cliente nem trabalhar de graça.',
@@ -107,7 +107,7 @@ export const blogPostsPt = [
 `,
   },
   {
-    slug: 'exemplos-de-clausulas-de-exclusoes-em-contratos-freelance',
+    slug: 'freelance-contract-exclusions-clause-examples',
     title: 'Exemplos de cláusulas de exclusões em contratos freelance',
     metaDescription:
       'As cláusulas de exclusões são sua melhor proteção contra o scope creep. Aqui estão exemplos reais que você pode copiar e adaptar para seus contratos.',
@@ -146,7 +146,7 @@ export const blogPostsPt = [
 `,
   },
   {
-    slug: 'scope-creep-esta-custando-dinheiro-aos-freelancers',
+    slug: 'scope-creep-costing-freelancers-money',
     title: 'O scope creep está custando dinheiro aos freelancers (e ninguém fala sobre isso)',
     metaDescription:
       '57% dos freelancers perdem dinheiro com trabalho não cobrado todo ano. Veja como o scope creep silenciosamente reduz sua taxa efetiva.',
@@ -188,7 +188,7 @@ export const blogPostsPt = [
 `,
   },
   {
-    slug: 'como-recusar-solicitacoes-de-clientes-profissionalmente',
+    slug: 'how-to-push-back-on-client-requests-professionally',
     title: 'Como recusar solicitações de clientes de forma profissional',
     metaDescription:
       'Empurrar de volta em solicitações de clientes não precisa ser desconfortável. Aqui estão as estratégias e linguagem exata para fazê-lo sem prejudicar o relacionamento.',
@@ -227,7 +227,7 @@ export const blogPostsPt = [
 `,
   },
   {
-    slug: 'rastreando-horas-gratuitas-que-dei-a-clientes',
+    slug: 'tracking-free-hours-clients',
     title: 'Rastrei cada hora gratuita que dei a clientes durante um mês. O número me chocou.',
     metaDescription:
       'Decidi registrar todas as horas de trabalho não cobrado que entregiei em um mês. O que encontrei mudou como gerencio meu negócio freelance.',
@@ -271,7 +271,7 @@ export const blogPostsPt = [
 `,
   },
   {
-    slug: 'palavras-exatas-fora-do-escopo',
+    slug: 'exact-words-out-of-scope',
     title: 'As palavras exatas que uso quando um cliente pede algo fora do contrato',
     metaDescription:
       'Quatro scripts testados para responder a solicitações de scope creep — sem prejudicar o relacionamento nem trabalhar de graça.',
@@ -308,7 +308,7 @@ export const blogPostsPt = [
 `,
   },
   {
-    slug: 'o-custo-de-dizer-sim-a-solicitacoes-pequenas',
+    slug: 'cost-of-saying-yes-small-requests',
     title: 'Por que dizer sim a solicitações pequenas está custando mais do que você pensa',
     metaDescription:
       'O custo real do scope creep não está em nenhuma solicitação individual — está no padrão. Veja como pequenas concessões se acumulam em grandes perdas.',
@@ -347,7 +347,7 @@ export const blogPostsPt = [
 `,
   },
   {
-    slug: 'sinais-de-alerta-de-scope-creep-que-freelancers-ignoram',
+    slug: 'scope-creep-red-flags-freelancers-miss',
     title: 'Sinais de alerta de scope creep que freelancers costumam ignorar',
     metaDescription:
       'O scope creep não aparece de repente — há sinais de aviso. Aprenda a reconhecê-los cedo antes que se tornem projetos não pagos.',
@@ -390,7 +390,7 @@ export const blogPostsPt = [
 `,
   },
   {
-    slug: 'como-escrever-uma-ordem-de-mudanca-freelance',
+    slug: 'how-to-write-a-freelance-change-order',
     title: 'Como escrever uma ordem de mudança freelance (com modelo)',
     metaDescription:
       'As ordens de mudança convertem scope creep de uma fonte de ressentimento em receita adicional. Aqui está exatamente como escrevê-las.',
@@ -434,7 +434,7 @@ Uma vez aprovado, começarei o trabalho adicional dentro de [prazo].
 `,
   },
   {
-    slug: 'scope-creep-em-projetos-de-desenvolvimento-web',
+    slug: 'scope-creep-web-development-projects',
     title: 'Scope creep em projetos de desenvolvimento web: o que devs precisam saber',
     metaDescription:
       'Projetos de desenvolvimento web são especialmente vulneráveis ao scope creep. Aqui está por que acontece e como se proteger.',
@@ -474,7 +474,7 @@ Uma vez aprovado, começarei o trabalho adicional dentro de [prazo].
 `,
   },
   {
-    slug: 'comunicacao-com-cliente-sobre-limites-de-escopo',
+    slug: 'client-communication-scope-boundaries',
     title: 'Comunicação com clientes sobre limites de escopo: um guia prático',
     metaDescription:
       'Como se comunicar com clientes sobre os limites do projeto sem prejudicar o relacionamento — com linguagem exata para as situações mais comuns.',
