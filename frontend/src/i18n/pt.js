@@ -1,4 +1,10 @@
 const pt = {
+  // ─── Verdict labels ────────────────────────────────────────────────────────
+  verdict_IN_SCOPE: 'Dentro do Escopo',
+  verdict_OUT_SCOPE: 'Fora do Escopo',
+  verdict_AMBIGUOUS: 'Ambíguo',
+  verdict_confidence: 'Confiança',
+
   // ─── Layout / Nav ──────────────────────────────────────────────────────────
   nav_dashboard: 'Painel',
   nav_analyze: 'Analisar',

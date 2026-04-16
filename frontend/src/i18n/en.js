@@ -1,4 +1,10 @@
 const en = {
+  // ─── Verdict labels ────────────────────────────────────────────────────────
+  verdict_IN_SCOPE: 'In Scope',
+  verdict_OUT_SCOPE: 'Out of Scope',
+  verdict_AMBIGUOUS: 'Ambiguous',
+  verdict_confidence: 'Confidence',
+
   // ─── Layout / Nav ──────────────────────────────────────────────────────────
   nav_dashboard: 'Dashboard',
   nav_analyze: 'Analyze',

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import api from '../api';
 import { useAuth } from '../context/AuthContext';
 import VerdictBadge from '../components/VerdictBadge';
@@ -194,12 +195,13 @@ export default function Analyze() {
 
 function AnalysisResult({ result, onCopy, copied, hourlyRate }) {
   const { verdict, confidence, contract_clause, reasoning, suggested_reply, hours_at_risk } = result;
+  const { t } = useTranslation();
 
   const config = {
-    IN_SCOPE:  { bg: 'bg-green-50',  border: 'border-green-200', text: 'text-green-800',  icon: '✅', label: 'In Scope' },
-    OUT_SCOPE: { bg: 'bg-red-50',    border: 'border-red-200',   text: 'text-red-800',    icon: '🚫', label: 'Out of Scope' },
-    AMBIGUOUS: { bg: 'bg-yellow-50', border: 'border-yellow-200', text: 'text-yellow-800', icon: '⚠️', label: 'Ambiguous' },
-  }[verdict];
+    IN_SCOPE:  { bg: 'bg-green-50',  border: 'border-green-200', text: 'text-green-800',  icon: '✅' },
+    OUT_SCOPE: { bg: 'bg-red-50',    border: 'border-red-200',   text: 'text-red-800',    icon: '🚫' },
+    AMBIGUOUS: { bg: 'bg-yellow-50', border: 'border-yellow-200', text: 'text-yellow-800', icon: '⚠️' },
+  }[verdict] ?? { bg: 'bg-yellow-50', border: 'border-yellow-200', text: 'text-yellow-800', icon: '⚠️' };
 
   const revenueAtRisk = hours_at_risk && hourlyRate ? hours_at_risk * hourlyRate : null;
 
@@ -211,8 +213,8 @@ function AnalysisResult({ result, onCopy, copied, hourlyRate }) {
           <span className="text-3xl">{config.icon}</span>
           <div className="flex-1">
             <div className="flex items-center gap-3 mb-1">
-              <h3 className={`text-xl font-bold ${config.text}`}>{config.label}</h3>
-              <span className="text-sm text-gray-500">Confidence: {confidence}%</span>
+              <h3 className={`text-xl font-bold ${config.text}`}>{t(`verdict_${verdict}`, t('verdict_AMBIGUOUS'))}</h3>
+              <span className="text-sm text-gray-500">{t('verdict_confidence')}: {confidence}%</span>
             </div>
             <p className="text-sm text-gray-700">{reasoning}</p>
             {revenueAtRisk > 0 && verdict === 'OUT_SCOPE' && (

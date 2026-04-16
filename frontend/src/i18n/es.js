@@ -1,4 +1,10 @@
 const es = {
+  // ─── Verdict labels ────────────────────────────────────────────────────────
+  verdict_IN_SCOPE: 'Dentro del Alcance',
+  verdict_OUT_SCOPE: 'Fuera del Alcance',
+  verdict_AMBIGUOUS: 'Ambiguo',
+  verdict_confidence: 'Confianza',
+
   // ─── Layout / Nav ──────────────────────────────────────────────────────────
   nav_dashboard: 'Panel',
   nav_analyze: 'Analizar',
