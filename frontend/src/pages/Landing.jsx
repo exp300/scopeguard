@@ -608,6 +608,7 @@ function Footer() {
           <Link to="/login" className="hover:text-gray-400 transition-colors">{t('footer_signin')}</Link>
           <Link to="/register" className="hover:text-gray-400 transition-colors">{t('footer_register')}</Link>
           <Link to="/blog" className="hover:text-gray-400 transition-colors">{t('footer_blog')}</Link>
+          <Link to="/feedback" className="hover:text-gray-400 transition-colors">Request a feature</Link>
           <span className="text-gray-800">·</span>
           <Link to="/terms" className="hover:text-gray-400 transition-colors">{t('footer_terms')}</Link>
           <Link to="/privacy" className="hover:text-gray-400 transition-colors">{t('footer_privacy')}</Link>

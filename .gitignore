@@ -32,3 +32,9 @@ Thumbs.db
 .vscode/
 .idea/
 *.swp
+
+# Local-only: mined Claude Code conversation history (contains personal messages)
+scripts/user-voice.json
+
+# Playwright MCP temp snapshots
+.playwright-mcp/

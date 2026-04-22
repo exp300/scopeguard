@@ -15,6 +15,7 @@ import Landing from './pages/Landing';
 import Terms from './pages/Terms';
 import Privacy from './pages/Privacy';
 import Refund from './pages/Refund';
+import Feedback from './pages/Feedback';
 import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
 import { BlogLangList, BlogLangPost } from './pages/BlogLang';
@@ -72,6 +73,7 @@ export default function App() {
           <Route path="/terms" element={<Terms />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/refund" element={<Refund />} />
+          <Route path="/feedback" element={<Feedback />} />
 
           {/* English blog */}
           <Route path="/blog" element={<Blog />} />
