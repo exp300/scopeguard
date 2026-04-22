@@ -43,7 +43,7 @@ export default function Layout() {
         </div>
 
         {/* Nav */}
-        <nav className="flex-1 px-3 py-4 space-y-1">
+        <nav className="flex-1 px-3 py-4 space-y-1 flex flex-col">
           {NAV.map(({ to, label, icon: Icon }) => (
             <NavLink
               key={to}
@@ -61,6 +61,21 @@ export default function Layout() {
               {label}
             </NavLink>
           ))}
+
+          <NavLink
+            to="/feedback"
+            onClick={() => setMobileOpen(false)}
+            className={({ isActive }) =>
+              `mt-auto flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                isActive
+                  ? 'bg-brand-50 text-brand-600'
+                  : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'
+              }`
+            }
+          >
+            <MessageIcon className="w-4 h-4" />
+            Send feedback
+          </NavLink>
         </nav>
 
         {/* User section */}
@@ -151,6 +166,13 @@ function CreditCardIcon({ className }) {
   return (
     <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
       <rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/>
+    </svg>
+  );
+}
+function MessageIcon({ className }) {
+  return (
+    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
     </svg>
   );
 }

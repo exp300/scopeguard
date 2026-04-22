@@ -89,9 +89,9 @@ function Hero() {
       </div>
 
       {/* Privacy badge */}
-      <div className="inline-flex items-center gap-2 text-xs text-gray-400 mb-10 bg-gray-50 border border-gray-200 rounded-full px-4 py-2">
-        <span>🔒</span>
-        <span>{t('hero_privacy')}</span>
+      <div className="inline-flex items-start gap-2.5 text-sm text-gray-700 mb-10 bg-emerald-50 border border-emerald-200 rounded-lg px-4 py-2.5 max-w-2xl">
+        <span className="text-base leading-5">🔒</span>
+        <span className="leading-5">{t('hero_privacy')}</span>
       </div>
 
       {/* Mockup */}
