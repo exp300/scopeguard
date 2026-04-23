@@ -9,6 +9,7 @@ const contractRoutes = require('./routes/contracts');
 const analysisRoutes = require('./routes/analysis');
 const billingRoutes = require('./routes/billing');
 const feedbackRoutes = require('./routes/feedback');
+const freeRoutes = require('./routes/free');
 
 const app = express();
 
@@ -32,6 +33,7 @@ app.use('/api/contracts', contractRoutes);
 app.use('/api/analysis', analysisRoutes);
 app.use('/api/billing', billingRoutes);
 app.use('/api/feedback', feedbackRoutes);
+app.use('/api/free', freeRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => res.json({ status: 'ok', timestamp: new Date().toISOString() }));

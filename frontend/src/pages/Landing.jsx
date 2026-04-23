@@ -610,6 +610,10 @@ function Footer() {
           <Link to="/blog" className="hover:text-gray-400 transition-colors">{t('footer_blog')}</Link>
           <Link to="/feedback" className="hover:text-gray-400 transition-colors">Request a feature</Link>
           <span className="text-gray-800">·</span>
+          <Link to="/contract-checker" className="hover:text-gray-400 transition-colors">Contract Checker</Link>
+          <Link to="/clause-library" className="hover:text-gray-400 transition-colors">Clause Library</Link>
+          <Link to="/change-order-generator" className="hover:text-gray-400 transition-colors">Change Order</Link>
+          <span className="text-gray-800">·</span>
           <Link to="/terms" className="hover:text-gray-400 transition-colors">{t('footer_terms')}</Link>
           <Link to="/privacy" className="hover:text-gray-400 transition-colors">{t('footer_privacy')}</Link>
           <Link to="/refund" className="hover:text-gray-400 transition-colors">{t('footer_refunds')}</Link>
