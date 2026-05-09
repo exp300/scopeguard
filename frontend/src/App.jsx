@@ -18,6 +18,7 @@ import Refund from './pages/Refund';
 import Feedback from './pages/Feedback';
 import ContractChecker from './pages/ContractChecker';
 import ClauseLibrary from './pages/ClauseLibrary';
+import RedFlagClause from './pages/RedFlagClause';
 import ChangeOrderGenerator from './pages/ChangeOrderGenerator';
 import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
@@ -79,6 +80,7 @@ export default function App() {
           <Route path="/feedback" element={<Feedback />} />
           <Route path="/contract-checker" element={<ContractChecker />} />
           <Route path="/clause-library" element={<ClauseLibrary />} />
+          <Route path="/red-flags/:slug" element={<RedFlagClause />} />
           <Route path="/change-order-generator" element={<ChangeOrderGenerator />} />
 
           {/* English blog */}
