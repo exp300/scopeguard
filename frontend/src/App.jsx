@@ -81,6 +81,10 @@ export default function App() {
           <Route path="/contract-checker" element={<ContractChecker />} />
           <Route path="/clause-library" element={<ClauseLibrary />} />
           <Route path="/red-flags/:slug" element={<RedFlagClause />} />
+          <Route path="/es/clause-library" element={<ClauseLibrary lang="es" />} />
+          <Route path="/es/red-flags/:slug" element={<RedFlagClause lang="es" />} />
+          <Route path="/pt/clause-library" element={<ClauseLibrary lang="pt" />} />
+          <Route path="/pt/red-flags/:slug" element={<RedFlagClause lang="pt" />} />
           <Route path="/change-order-generator" element={<ChangeOrderGenerator />} />
 
           {/* English blog */}

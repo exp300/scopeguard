@@ -104,6 +104,46 @@
   <url><loc>https://thescopeguard.com/red-flags/termination-for-convenience-no-compensation</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://thescopeguard.com/red-flags/indefinite-pause-clause</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
 
+  <!-- Spanish clause library -->
+  <url><loc>https://thescopeguard.com/es/clause-library</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://thescopeguard.com/es/red-flags/unlimited-revisions</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://thescopeguard.com/es/red-flags/all-necessary-work</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://thescopeguard.com/es/red-flags/final-approval-payment</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://thescopeguard.com/es/red-flags/vague-milestones</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://thescopeguard.com/es/red-flags/work-for-hire-full-ip-transfer</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://thescopeguard.com/es/red-flags/retroactive-ip-assignment</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://thescopeguard.com/es/red-flags/perpetual-license-without-compensation</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://thescopeguard.com/es/red-flags/overly-broad-non-compete</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://thescopeguard.com/es/red-flags/implied-exclusivity</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://thescopeguard.com/es/red-flags/net-60-payment-terms</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://thescopeguard.com/es/red-flags/payment-tied-to-third-party</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://thescopeguard.com/es/red-flags/no-kill-fee</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://thescopeguard.com/es/red-flags/unlimited-liability</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://thescopeguard.com/es/red-flags/one-way-indemnification</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://thescopeguard.com/es/red-flags/ip-indemnification-without-boundaries</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://thescopeguard.com/es/red-flags/termination-for-convenience-no-compensation</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://thescopeguard.com/es/red-flags/indefinite-pause-clause</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+
+  <!-- Portuguese clause library -->
+  <url><loc>https://thescopeguard.com/pt/clause-library</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://thescopeguard.com/pt/red-flags/unlimited-revisions</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://thescopeguard.com/pt/red-flags/all-necessary-work</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://thescopeguard.com/pt/red-flags/final-approval-payment</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://thescopeguard.com/pt/red-flags/vague-milestones</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://thescopeguard.com/pt/red-flags/work-for-hire-full-ip-transfer</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://thescopeguard.com/pt/red-flags/retroactive-ip-assignment</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://thescopeguard.com/pt/red-flags/perpetual-license-without-compensation</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://thescopeguard.com/pt/red-flags/overly-broad-non-compete</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://thescopeguard.com/pt/red-flags/implied-exclusivity</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://thescopeguard.com/pt/red-flags/net-60-payment-terms</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://thescopeguard.com/pt/red-flags/payment-tied-to-third-party</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://thescopeguard.com/pt/red-flags/no-kill-fee</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://thescopeguard.com/pt/red-flags/unlimited-liability</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://thescopeguard.com/pt/red-flags/one-way-indemnification</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://thescopeguard.com/pt/red-flags/ip-indemnification-without-boundaries</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://thescopeguard.com/pt/red-flags/termination-for-convenience-no-compensation</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://thescopeguard.com/pt/red-flags/indefinite-pause-clause</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+
   <!-- English blog posts -->
   <url>
     <loc>https://thescopeguard.com/blog/how-to-handle-scope-creep-as-a-freelancer</loc>

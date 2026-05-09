@@ -1,21 +1,103 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { clauses, clauseCategories } from '../data/clauses';
+import { clausesEs, clauseCategoriesEs } from '../data/clausesEs';
+import { clausesPt, clauseCategoriesPt } from '../data/clausesPt';
 
-export default function ClauseLibrary() {
+const I18N = {
+  en: {
+    h1: 'Freelance Contract Red Flag Clause Library',
+    intro: (n) => `${n} clauses that freelancers commonly miss — what they say, why they're dangerous, and exactly how to negotiate better language. Click any clause for the full breakdown, real-world example, and replacement wording.`,
+    docTitle: 'Freelance Contract Red Flag Clause Library | ScopeGuard',
+    metaDesc: (n) => `${n} red-flag clauses freelancers commonly miss in contracts — what they say, why they're dangerous, and exactly how to negotiate better language.`,
+    docTitleDefault: 'ScopeGuard — AI Scope Creep Detector for Freelancers',
+    badge: 'Free Resource',
+    signupCta: 'Sign up free →',
+    readMore: 'Read full breakdown →',
+    ctaHeading: 'Already have a contract with some of these?',
+    ctaSub: "Upload it to ScopeGuard. When a client sends a new request, you'll know in seconds whether it's in scope — with a ready-to-send reply.",
+    ctaPrimary: 'Start free — no credit card',
+    ctaSecondary: 'Try the free scope checker →',
+    homePath: '/',
+    redFlagBasePath: '/red-flags',
+    contractCheckerPath: '/contract-checker',
+    changeOrderPath: '/change-order-generator',
+    privacyPath: '/privacy',
+    footerHome: 'thescopeguard.com',
+    footerChecker: 'Contract Scope Checker',
+    footerOrder: 'Change Order Generator',
+    footerPrivacy: 'Privacy',
+  },
+  es: {
+    h1: 'Biblioteca de Cláusulas Peligrosas en Contratos Freelance',
+    intro: (n) => `${n} cláusulas que los freelancers suelen pasar por alto: qué dicen, por qué son peligrosas y cómo negociar un lenguaje mejor. Haz clic en cualquier cláusula para ver el análisis completo, un ejemplo real y la redacción alternativa.`,
+    docTitle: 'Biblioteca de Cláusulas Peligrosas en Contratos Freelance | ScopeGuard',
+    metaDesc: (n) => `${n} cláusulas peligrosas que los freelancers pasan por alto en sus contratos: qué dicen, por qué son peligrosas y cómo negociar un lenguaje mejor.`,
+    docTitleDefault: 'ScopeGuard — Detector de Scope Creep con IA para Freelancers',
+    badge: 'Recurso Gratuito',
+    signupCta: 'Regístrate gratis →',
+    readMore: 'Ver análisis completo →',
+    ctaHeading: '¿Ya tienes un contrato con alguna de estas?',
+    ctaSub: 'Súbelo a ScopeGuard. Cuando un cliente envíe una nueva solicitud, sabrás en segundos si está dentro del alcance, con una respuesta lista para enviar.',
+    ctaPrimary: 'Empieza gratis — sin tarjeta',
+    ctaSecondary: 'Prueba el verificador gratuito →',
+    homePath: '/es',
+    redFlagBasePath: '/es/red-flags',
+    contractCheckerPath: '/contract-checker',
+    changeOrderPath: '/change-order-generator',
+    privacyPath: '/privacy',
+    footerHome: 'thescopeguard.com',
+    footerChecker: 'Verificador de Contratos',
+    footerOrder: 'Generador de Órdenes de Cambio',
+    footerPrivacy: 'Privacidad',
+  },
+  pt: {
+    h1: 'Biblioteca de Cláusulas Perigosas em Contratos Freelancer',
+    intro: (n) => `${n} cláusulas que freelancers costumam deixar passar: o que elas dizem, por que são perigosas e como negociar uma redação melhor. Clique em qualquer cláusula para ver a análise completa, exemplo real e redação alternativa.`,
+    docTitle: 'Biblioteca de Cláusulas Perigosas em Contratos Freelancer | ScopeGuard',
+    metaDesc: (n) => `${n} cláusulas perigosas que freelancers costumam deixar passar em contratos: o que dizem, por que são perigosas e como negociar uma redação melhor.`,
+    docTitleDefault: 'ScopeGuard — Detector de Scope Creep com IA para Freelancers',
+    badge: 'Recurso Grátis',
+    signupCta: 'Cadastre-se grátis →',
+    readMore: 'Ver análise completa →',
+    ctaHeading: 'Já tem um contrato com alguma destas?',
+    ctaSub: 'Suba para o ScopeGuard. Quando um cliente enviar uma nova solicitação, você saberá em segundos se está dentro do escopo, com uma resposta pronta para enviar.',
+    ctaPrimary: 'Comece grátis — sem cartão',
+    ctaSecondary: 'Teste o verificador grátis →',
+    homePath: '/pt',
+    redFlagBasePath: '/pt/red-flags',
+    contractCheckerPath: '/contract-checker',
+    changeOrderPath: '/change-order-generator',
+    privacyPath: '/privacy',
+    footerHome: 'thescopeguard.com',
+    footerChecker: 'Verificador de Contratos',
+    footerOrder: 'Gerador de Ordem de Mudança',
+    footerPrivacy: 'Privacidade',
+  },
+};
+
+const DATA_BY_LANG = {
+  en: { clauses, categories: clauseCategories },
+  es: { clauses: clausesEs, categories: clauseCategoriesEs },
+  pt: { clauses: clausesPt, categories: clauseCategoriesPt },
+};
+
+export default function ClauseLibrary({ lang = 'en' }) {
+  const t = I18N[lang] || I18N.en;
+  const data = DATA_BY_LANG[lang] || DATA_BY_LANG.en;
+
   useEffect(() => {
-    document.title = 'Freelance Contract Red Flag Clause Library | ScopeGuard';
+    document.title = t.docTitle;
     const meta = document.querySelector('meta[name="description"]') ||
       Object.assign(document.createElement('meta'), { name: 'description' });
-    meta.content =
-      `${clauses.length} red-flag clauses freelancers commonly miss in contracts — what they say, why they're dangerous, and exactly how to negotiate better language.`;
+    meta.content = t.metaDesc(data.clauses.length);
     if (!meta.parentNode) document.head.appendChild(meta);
-    return () => { document.title = 'ScopeGuard — AI Scope Creep Detector for Freelancers'; };
-  }, []);
+    return () => { document.title = t.docTitleDefault; };
+  }, [t, data.clauses.length]);
 
-  const byCategory = clauseCategories.map(cat => ({
+  const byCategory = data.categories.map(cat => ({
     ...cat,
-    items: clauses.filter(c => c.category === cat.id),
+    items: data.clauses.filter(c => c.category === cat.id),
   }));
 
   return (
@@ -23,14 +105,14 @@ export default function ClauseLibrary() {
       {/* Header */}
       <header className="bg-white border-b border-gray-200">
         <div className="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+          <Link to={t.homePath} className="flex items-center gap-2 hover:opacity-80 transition-opacity">
             <span className="text-xl">🛡️</span>
             <span className="font-bold text-gray-900">ScopeGuard</span>
           </Link>
           <div className="flex items-center gap-3">
-            <span className="text-xs font-medium bg-brand-50 text-brand-600 px-2.5 py-1 rounded-full">Free Resource</span>
+            <span className="text-xs font-medium bg-brand-50 text-brand-600 px-2.5 py-1 rounded-full">{t.badge}</span>
             <Link to="/register" className="text-sm font-medium text-brand-600 hover:text-brand-700">
-              Sign up free →
+              {t.signupCta}
             </Link>
           </div>
         </div>
@@ -40,15 +122,13 @@ export default function ClauseLibrary() {
         {/* Hero */}
         <div className="mb-10">
           <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-3">
-            Freelance Contract Red Flag Clause Library
+            {t.h1}
           </h1>
           <p className="text-lg text-gray-600 max-w-3xl">
-            {clauses.length} clauses that freelancers commonly miss — what they say, why they're dangerous,
-            and exactly how to negotiate better language. Click any clause for the full breakdown,
-            real-world example, and replacement wording.
+            {t.intro(data.clauses.length)}
           </p>
           <div className="flex flex-wrap gap-2 mt-5">
-            {clauseCategories.map(c => (
+            {data.categories.map(c => (
               <button
                 key={c.id}
                 onClick={() => {
@@ -75,7 +155,7 @@ export default function ClauseLibrary() {
                 {cat.items.map(clause => (
                   <Link
                     key={clause.slug}
-                    to={`/red-flags/${clause.slug}`}
+                    to={`${t.redFlagBasePath}/${clause.slug}`}
                     className="block bg-white rounded-xl border border-gray-200 p-5 hover:border-brand-300 hover:shadow-sm transition-all group"
                   >
                     <div className="flex items-start gap-3 mb-2">
@@ -88,7 +168,7 @@ export default function ClauseLibrary() {
                       {clause.example.replace(/^"|"$/g, '')}
                     </p>
                     <p className="text-xs font-medium text-brand-600 mt-3 ml-9 group-hover:underline">
-                      Read full breakdown →
+                      {t.readMore}
                     </p>
                   </Link>
                 ))}
@@ -99,23 +179,22 @@ export default function ClauseLibrary() {
 
         {/* CTA */}
         <div className="mt-14 bg-brand-600 rounded-2xl p-8 text-white text-center">
-          <h2 className="font-bold text-2xl mb-2">Already have a contract with some of these?</h2>
+          <h2 className="font-bold text-2xl mb-2">{t.ctaHeading}</h2>
           <p className="text-brand-100 mb-6 max-w-lg mx-auto">
-            Upload it to ScopeGuard. When a client sends a new request, you'll know in seconds
-            whether it's in scope — with a ready-to-send reply.
+            {t.ctaSub}
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link
               to="/register"
               className="inline-block bg-white text-brand-600 font-semibold text-sm px-6 py-3 rounded-lg hover:bg-brand-50 transition-colors"
             >
-              Start free — no credit card
+              {t.ctaPrimary}
             </Link>
             <Link
-              to="/contract-checker"
+              to={t.contractCheckerPath}
               className="inline-block bg-brand-500 text-white font-semibold text-sm px-6 py-3 rounded-lg hover:bg-brand-400 transition-colors border border-brand-400"
             >
-              Try the free scope checker →
+              {t.ctaSecondary}
             </Link>
           </div>
         </div>
@@ -123,13 +202,13 @@ export default function ClauseLibrary() {
 
       {/* Footer */}
       <footer className="mt-16 border-t border-gray-200 py-6 text-center text-xs text-gray-400">
-        <Link to="/" className="hover:text-gray-600">thescopeguard.com</Link>
+        <Link to={t.homePath} className="hover:text-gray-600">{t.footerHome}</Link>
         {' · '}
-        <Link to="/contract-checker" className="hover:text-gray-600">Contract Scope Checker</Link>
+        <Link to={t.contractCheckerPath} className="hover:text-gray-600">{t.footerChecker}</Link>
         {' · '}
-        <Link to="/change-order-generator" className="hover:text-gray-600">Change Order Generator</Link>
+        <Link to={t.changeOrderPath} className="hover:text-gray-600">{t.footerOrder}</Link>
         {' · '}
-        <Link to="/privacy" className="hover:text-gray-600">Privacy</Link>
+        <Link to={t.privacyPath} className="hover:text-gray-600">{t.footerPrivacy}</Link>
       </footer>
     </div>
   );
